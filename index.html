@@ -584,47 +584,6 @@ function goTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth'}
       scene.add(sp); return sp;
     });
 
-    /* ─ GOLD TAPERED LASH geometry ─ */
-    function makeLash(ox,oy,oz,sc,rz){
-      /* More dramatic curl: rises and curls back */
-      var curve=new THREE.CatmullRomCurve3([
-        new THREE.Vector3(0,0,0),
-        new THREE.Vector3(.12*sc,.5*sc,.08),
-        new THREE.Vector3(.24*sc,1.1*sc,.2),
-        new THREE.Vector3(.28*sc,1.65*sc,.15),
-        new THREE.Vector3(.18*sc,2.1*sc,.04),
-        new THREE.Vector3(.04*sc,2.4*sc,-.06)
-      ]);
-      var N=28, frames=curve.computeFrenetFrames(N,false), pts=curve.getSpacedPoints(N);
-      var baseW=0.065*sc, verts=[],uvs=[],inds=[];
-      for(var i=0;i<=N;i++){
-        var tt=i/N, hw=baseW*Math.pow(1-tt,.6)*.5;
-        var p=pts[i],bn=frames.binormals[i];
-        verts.push(p.x-bn.x*hw,p.y-bn.y*hw,p.z-bn.z*hw, p.x+bn.x*hw,p.y+bn.y*hw,p.z+bn.z*hw);
-        uvs.push(0,tt,1,tt);
-        if(i<N){var a=i*2;inds.push(a,a+2,a+1,a+1,a+2,a+3);}
-      }
-      var geo=new THREE.BufferGeometry();
-      geo.setAttribute('position',new THREE.BufferAttribute(new Float32Array(verts),3));
-      geo.setAttribute('uv',new THREE.BufferAttribute(new Float32Array(uvs),2));
-      geo.setIndex(inds); geo.computeVertexNormals();
-      /* GOLD material — visible on dark background */
-      var mat=new THREE.MeshStandardMaterial({
-        color:0xc8a256, metalness:.85, roughness:.1, side:THREE.DoubleSide,
-        emissive:0x3a2a08, emissiveIntensity:.4
-      });
-      var m=new THREE.Mesh(geo,mat);
-      m.position.set(ox,oy,oz); m.rotation.z=rz;
-      m.userData={ph:Math.random()*Math.PI*2,fs:.4+Math.random()*.5,rs:(Math.random()-.5)*.012,rph:Math.random()*Math.PI*2};
-      return m;
-    }
-    var lashGroup=new THREE.Group(), lashes=[], lashCnt=mob?8:18;
-    for(var i=0;i<lashCnt;i++){
-      var l=makeLash((Math.random()-.5)*9,(Math.random()-.5)*4.5,(Math.random()-.5)*2,.5+Math.random()*1,(Math.random()-.5)*.8);
-      lashes.push(l); lashGroup.add(l);
-    }
-    scene.add(lashGroup);
-
     /* ─ lighting (warm for gold) ─ */
     scene.add(new THREE.AmbientLight(0xfff0d0,.8));
     var pl1=new THREE.PointLight(0xffd080,6,20); pl1.position.set(3,4,4); scene.add(pl1);
@@ -656,16 +615,6 @@ function goTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth'}
       scene.add(dd); diamonds.push(dd);
     }
 
-    /* ─ entry animation ─ */
-    lashGroup.scale.set(.01,.01,.01);
-    var entered=false;
-    new IntersectionObserver(function(en){
-      if(en[0].isIntersecting&&!entered){entered=true;
-        if(window.gsap) gsap.to(lashGroup.scale,{x:1,y:1,z:1,duration:2.2,ease:'elastic.out(1,.4)'});
-        else lashGroup.scale.set(1,1,1);
-      }
-    },{threshold:.1}).observe(section);
-
     var mx=0,my=0;
     document.addEventListener('mousemove',function(e){mx=(e.clientX/window.innerWidth)*2-1;my=-(e.clientY/window.innerHeight)*2+1;});
     document.addEventListener('touchmove',function(e){if(e.touches[0]){mx=(e.touches[0].clientX/window.innerWidth)*2-1;my=-(e.touches[0].clientY/window.innerHeight)*2+1;}},{passive:true});
@@ -690,17 +639,6 @@ function goTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth'}
         if(!sp.userData.baseS) sp.userData.baseS=sp.scale.x;
         sp.scale.set(sp.userData.baseS*(1+.15*Math.sin(t*d.spd+d.ph)),sp.userData.baseS*(1+.15*Math.sin(t*d.spd+d.ph)),1);
       });
-
-      /* gold lashes: float + continuous rotation */
-      lashes.forEach(function(l){
-        var d=l.userData;
-        l.position.y+=Math.sin(t*d.fs+d.ph)*.001;
-        l.position.x+=Math.cos(t*d.fs*.6+d.ph)*.0005;
-        l.rotation.z+=d.rs;
-        l.rotation.x=Math.sin(t*.3+d.rph)*.1;
-      });
-      lashGroup.rotation.y+=(mx*.25+Math.sin(t*.1)*.12-lashGroup.rotation.y)*.025;
-      lashGroup.rotation.x+=(my*.12+Math.sin(t*.08)*.05-lashGroup.rotation.x)*.025;
 
       /* lights orbit */
       pl1.position.x=Math.sin(t*.4)*4; pl1.position.y=Math.cos(t*.35)*3;
