@@ -4,105 +4,80 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Ona Beauty – Olivera</title>
 <meta name="description" content="Professionelli Beauty-Behandlige in Zürich – Wimpern-Extensions, Microblading, Wimpernlifting, Laser Epilasyon.">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-
 <style>
-:root {
-  --ivory:   #faf8f5;
-  --ivory2:  #f3ede6;
-  --blush:   #ede3dc;
-  --gold:    #c4a26a;
-  --gold-lt: #d9be93;
-  --dark:    #1c1a17;
-  --mid:     #6b6460;
+:root{
+  --ivory:#faf8f5;--ivory2:#f3ede6;--blush:#ede3dc;
+  --gold:#c4a26a;--gold-lt:#d9be93;--dark:#1c1a17;--mid:#6b6460;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:auto}
-body{background:var(--ivory);color:var(--dark);font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-weight:300;overflow-x:hidden;cursor:none}
+body{background:var(--ivory);color:var(--dark);font-family:'Inter',-apple-system,sans-serif;font-weight:300;overflow-x:hidden;cursor:none}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:var(--ivory)}
 ::-webkit-scrollbar-thumb{background:var(--gold-lt);border-radius:2px}
 
-/* ─── KEYFRAMES ─── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
-@keyframes scaleY{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+/* ── KEYFRAMES ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@keyframes scaleLineY{from{transform:scaleY(0)}to{transform:scaleY(1)}}
 @keyframes charRise{from{opacity:0;transform:translateY(110%)}to{opacity:1;transform:none}}
-@keyframes imgReveal{from{opacity:0;transform:scale(1.06)}to{opacity:1;transform:scale(1)}}
-@keyframes clipReveal{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0% 0)}}
-@keyframes countUp{from{opacity:0;transform:scale(0.6)}to{opacity:1;transform:scale(1)}}
+@keyframes imgIn{from{opacity:0;transform:scale(1.07)}to{opacity:1;transform:scale(1)}}
+@keyframes clipIn{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0% 0)}}
+@keyframes wordUp{from{opacity:0;transform:translateY(100%)}to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{opacity:.7;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
 
-/* ─── CURSOR ─── */
-#cursor-dot,#cursor-ring{position:fixed;border-radius:50%;pointer-events:none;z-index:99999;will-change:transform;top:0;left:0}
-#cursor-dot{width:6px;height:6px;background:var(--gold);transform:translate(-50%,-50%)}
-#cursor-ring{width:34px;height:34px;border:1.5px solid var(--gold);opacity:.65;transform:translate(-50%,-50%);transition:width .22s,height .22s,opacity .22s,background .22s}
-#cursor-ring.hov{width:56px;height:56px;opacity:1;background:rgba(196,162,106,.06)}
-.glitter{position:fixed;border-radius:50%;pointer-events:none;z-index:99998;background:var(--gold)}
+/* ── CURSOR ── */
+#cx,#cr{position:fixed;border-radius:50%;pointer-events:none;z-index:99999;top:0;left:0}
+#cx{width:6px;height:6px;background:var(--gold);transform:translate(-50%,-50%)}
+#cr{width:34px;height:34px;border:1.5px solid var(--gold);opacity:.6;transform:translate(-50%,-50%);transition:width .2s,height .2s,opacity .2s,background .2s}
+#cr.h{width:54px;height:54px;opacity:1;background:rgba(196,162,106,.07)}
+.glit{position:fixed;border-radius:50%;pointer-events:none;z-index:99998;background:var(--gold)}
 
-/* ─── NAV ─── */
+/* ── NAV ── */
 .nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:26px 60px;transition:background .4s,padding .4s,box-shadow .4s}
 .nav.scrolled{background:rgba(250,248,245,.93);backdrop-filter:blur(16px);padding:14px 60px;box-shadow:0 1px 0 rgba(196,162,106,.12)}
-.nav-logo{font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;letter-spacing:8px;text-decoration:none;color:var(--dark)}
+.nav-logo{font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;letter-spacing:8px;text-decoration:none;color:var(--dark);animation:fadeUp .7s .2s both}
 .nav-logo span{color:var(--gold)}
-.nav-links{display:flex;gap:32px}
+.nav-links{display:flex;gap:32px;animation:fadeUp .7s .35s both}
 .nav-links a{font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--mid);transition:color .2s}
 .nav-links a:hover{color:var(--dark)}
-.nav-cta{font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--dark);border:1px solid rgba(196,162,106,.4);padding:10px 20px;transition:background .25s,color .25s,border-color .25s;cursor:none}
+.nav-cta{font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--dark);border:1px solid rgba(196,162,106,.4);padding:10px 20px;transition:background .25s,color .25s,border-color .25s;cursor:none;animation:fadeUp .7s .5s both}
 .nav-cta:hover{background:var(--gold);color:#fff;border-color:var(--gold)}
 
-/* ─── HERO ─── */
+/* ── HERO ── */
 .hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden}
-.hero-line{position:absolute;left:58px;top:10vh;bottom:10vh;width:1px;background:linear-gradient(to bottom,transparent,var(--gold-lt),transparent);transform-origin:top;animation:scaleY 1.4s .4s both ease}
+.hero-line{position:absolute;left:58px;top:10vh;bottom:10vh;width:1px;background:linear-gradient(to bottom,transparent,var(--gold-lt),transparent);transform-origin:top;animation:scaleLineY 1.4s .4s both ease}
 .hero-left{display:flex;flex-direction:column;justify-content:center;padding:140px 60px 80px 110px;position:relative;z-index:2}
 .hero-eyebrow{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:28px;animation:fadeUp .9s .5s both}
-.hero-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(52px,6vw,88px);font-weight:300;line-height:1.06;letter-spacing:-1px;margin-bottom:28px}
+.hero-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(50px,6vw,86px);font-weight:300;line-height:1.06;letter-spacing:-1px;margin-bottom:28px}
 .hero-title em{font-style:italic;color:var(--gold)}
 .hero-char{display:inline-block;animation:charRise .5s both;animation-delay:var(--d,0s)}
 .hero-sub{font-size:15px;line-height:1.8;color:var(--mid);max-width:380px;margin-bottom:44px;animation:fadeUp .9s 1.7s both}
 .hero-actions{display:flex;gap:16px;align-items:center;animation:fadeUp .8s 2s both}
-.scroll-hint{display:flex;align-items:center;gap:12px;margin-top:56px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--mid);animation:fadeUp .7s 2.4s both}
+.scroll-hint{display:flex;align-items:center;gap:12px;margin-top:52px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--mid);animation:fadeUp .7s 2.4s both}
 .scroll-line{display:block;width:32px;height:1px;background:var(--gold-lt)}
 .hero-right{position:relative;overflow:hidden}
-.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;animation:imgReveal 1.4s .2s both}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;animation:imgIn 1.4s .2s both}
 .hero-img-overlay{position:absolute;inset:0;background:linear-gradient(to right,var(--ivory) 0%,transparent 35%),linear-gradient(to bottom,transparent 55%,var(--ivory) 100%)}
 
-/* ─── BUTTONS ─── */
-.btn-primary{display:inline-block;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:#fff;background:var(--dark);border:none;padding:16px 32px;cursor:none;position:relative;overflow:hidden;transition:transform .2s}
+/* ── BUTTONS ── */
+.btn-primary{display:inline-block;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:#fff;background:var(--dark);border:none;padding:16px 32px;cursor:none;position:relative;overflow:hidden}
 .btn-primary::after{content:'';position:absolute;inset:0;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.16,1,.3,1)}
 .btn-primary:hover::after{transform:scaleX(1)}
 .btn-primary span{position:relative;z-index:1}
 .btn-ghost{display:inline-block;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--mid);background:none;border:none;padding:16px 0;cursor:none;transition:color .2s}
 .btn-ghost:hover{color:var(--dark)}
 
-/* ─── LASH 3D SECTION ─── */
-.lash-scene{position:relative;height:82vh;background:var(--dark);overflow:hidden;display:flex;align-items:center}
-#lash-canvas{position:absolute;inset:0;width:100%;height:100%}
-.lash-content{position:relative;z-index:2;padding:0 110px;max-width:580px}
-.lash-content .section-label{color:var(--gold)}
-.lash-content .section-heading{color:var(--ivory)}
-.lash-content .section-heading em{color:var(--gold)}
-.lash-desc{font-size:15px;line-height:1.85;color:rgba(250,248,245,.45);margin-top:20px;max-width:400px}
-
-/* ─── SCROLL REVEALS ─── */
-.reveal{transition:opacity .85s ease,transform .85s ease}
-.reveal.hidden{opacity:0;transform:translateY(36px)}
-
-/* ─── SECTIONS ─── */
-.section{padding:110px 100px;max-width:1400px;margin:0 auto}
-.section-label{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:block}
-.section-heading{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(36px,4vw,58px);font-weight:300;line-height:1.1;margin-bottom:60px}
-.section-heading em{font-style:italic;color:var(--gold)}
-
-/* ─── BOOKING ─── */
-.booking-wrap{background:var(--dark);padding:110px 0;color:#fff}
-.booking-inner{max-width:660px;margin:0 auto;padding:0 40px}
+/* ── BOOKING (3D canvas lives here) ── */
+.booking-wrap{position:relative;background:var(--dark);padding:110px 0;color:#fff;overflow:hidden}
+#lash-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block}
+.booking-inner{position:relative;z-index:2;max-width:660px;margin:0 auto;padding:0 40px}
 .booking-label{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:block}
-.booking-heading{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(32px,4vw,50px);font-weight:300;margin-bottom:10px}
+.booking-heading{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(30px,4vw,50px);font-weight:300;margin-bottom:10px}
 .booking-heading em{font-style:italic;color:var(--gold)}
 .booking-sub{font-size:14px;color:rgba(255,255,255,.4);margin-bottom:44px;line-height:1.7}
 .booking-steps{display:flex;flex-direction:column;gap:2px;margin-bottom:28px}
@@ -133,7 +108,7 @@ body{background:var(--ivory);color:var(--dark);font-family:'Inter',-apple-system
 .conf-input:focus{border-color:var(--gold)}
 .btn-book{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--dark);background:var(--gold);border:none;padding:17px 32px;cursor:none;transition:background .25s,opacity .25s;font-family:inherit;align-self:flex-start}
 .btn-book:hover{background:var(--gold-lt)}
-.btn-book:disabled{opacity:.4;cursor:not-allowed}
+.btn-book:disabled{opacity:.4}
 .booking-success{display:none;text-align:center;padding:56px 0}
 .booking-success.visible{display:block}
 .success-icon{width:52px;height:52px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--gold);margin:0 auto 22px}
@@ -141,21 +116,38 @@ body{background:var(--ivory);color:var(--dark);font-family:'Inter',-apple-system
 .success-desc{font-size:14px;color:rgba(255,255,255,.4);line-height:1.7}
 .booking-note{font-size:11px;letter-spacing:1.5px;color:rgba(255,255,255,.15);margin-top:28px;text-align:center}
 
-/* ─── SERVICES ─── */
+/* ── SECTIONS ── */
+.section{padding:110px 100px;max-width:1400px;margin:0 auto}
+.section-label{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:block}
+.section-heading{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(36px,4vw,58px);font-weight:300;line-height:1.1;margin-bottom:60px}
+.section-heading em{font-style:italic;color:var(--gold)}
+
+/* ── REVEAL ── */
+.reveal{transition:opacity .85s ease,transform .85s ease}
+.reveal.hidden{opacity:0;transform:translateY(34px)}
+.reveal-fast{transition:opacity .6s ease,transform .6s ease}
+.reveal-fast.hidden{opacity:0;transform:translateY(20px)}
+
+/* word reveal */
+.word-wrap{overflow:hidden;display:inline-block}
+.word-inner{display:inline-block;animation:wordUp .65s both;animation-delay:var(--wd,0s)}
+
+/* ── SERVICES ── */
 .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
 .service-card{padding:40px 34px;background:var(--ivory2);position:relative;overflow:hidden;cursor:none;transition:box-shadow .3s}
 .service-card:hover{box-shadow:0 20px 60px rgba(196,162,106,.14)}
 .card-glow{position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(196,162,106,.13) 0%,transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
 .service-card:hover .card-glow{opacity:1}
-.service-icon{display:block;font-size:16px;color:var(--gold-lt);margin-bottom:18px}
+.service-icon{display:block;font-size:16px;color:var(--gold-lt);margin-bottom:18px;animation:pulse 2.5s ease-in-out infinite}
 .service-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:400;margin-bottom:10px}
 .service-desc{font-size:13px;line-height:1.75;color:var(--mid);margin-bottom:18px}
 .service-price{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
 
-/* ─── PORTFOLIO ─── */
+/* ── PORTFOLIO ── */
 .portfolio-wrap{padding:110px 0 80px}
 .portfolio-intro{padding:0 100px;margin-bottom:52px}
-.portfolio-track{display:flex;gap:20px;padding:0 100px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.portfolio-track{display:flex;gap:20px;padding:0 100px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;cursor:grab}
+.portfolio-track:active{cursor:grabbing}
 .portfolio-track::-webkit-scrollbar{display:none}
 .portfolio-item{flex-shrink:0;width:460px;height:560px;position:relative;overflow:hidden;scroll-snap-align:start;cursor:none}
 .portfolio-item img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.16,1,.3,1)}
@@ -166,21 +158,20 @@ body{background:var(--ivory);color:var(--dark);font-family:'Inter',-apple-system
 .portfolio-item--cta{background:var(--blush);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:56px 44px}
 .portfolio-item--cta p{font-family:'Cormorant Garamond',Georgia,serif;font-size:30px;font-weight:300;line-height:1.2;margin-bottom:28px}
 
-/* ─── ABOUT ─── */
+/* ── ABOUT ── */
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
 .about-photo-wrap{position:relative}
 .about-photo{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:center top}
-.about-photo.anim-ready{animation:clipReveal 1.4s cubic-bezier(.16,1,.3,1) both}
+.about-photo.clip-ready{animation:clipIn 1.4s cubic-bezier(.16,1,.3,1) both}
 .about-photo-badge{position:absolute;bottom:-20px;right:-20px;background:var(--dark);padding:22px 26px;text-align:center}
 .badge-num{font-family:'Cormorant Garamond',Georgia,serif;font-size:46px;font-weight:300;color:var(--gold);line-height:1}
 .badge-num::after{content:'+'}
 .badge-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:6px}
-.about-text .section-heading{margin-bottom:0}
 .about-divider{width:40px;height:1px;background:var(--gold);margin:22px 0}
 .about-body{font-size:15px;line-height:1.85;color:var(--mid);margin-bottom:14px}
 .about-sig{font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;font-style:italic;color:var(--gold);margin-top:30px}
 
-/* ─── FOOTER ─── */
+/* ── FOOTER ── */
 .footer{background:var(--dark);padding:80px 100px;text-align:center;position:relative;overflow:hidden}
 .footer::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:280px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent)}
 .footer-logo{font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;font-weight:300;letter-spacing:12px;color:var(--ivory);margin-bottom:8px}
@@ -192,10 +183,10 @@ body{background:var(--ivory);color:var(--dark);font-family:'Inter',-apple-system
 .footer-line{width:1px;height:12px;background:rgba(255,255,255,.12)}
 .footer-copy{font-size:11px;letter-spacing:1px;color:rgba(255,255,255,.15)}
 
-/* ─── MOBILE ─── */
+/* ── MOBILE ── */
 @media(max-width:900px){
   body{cursor:auto}
-  #cursor-dot,#cursor-ring{display:none}
+  #cx,#cr{display:none}
   .nav{padding:18px 24px}
   .nav.scrolled{padding:12px 24px}
   .nav-links{display:none}
@@ -204,35 +195,33 @@ body{background:var(--ivory);color:var(--dark);font-family:'Inter',-apple-system
   .hero-right{height:52svh;order:1}
   .hero-img{position:absolute}
   .hero-line{display:none}
-  .lash-scene{height:65vh}
-  .lash-content{padding:0 24px}
   .section{padding:80px 24px}
   .services-grid{grid-template-columns:1fr}
   .portfolio-intro{padding:0 24px}
-  .portfolio-track{padding:0 24px}
+  .portfolio-track{padding:0 24px;cursor:default}
   .portfolio-item{width:86vw;height:460px}
   .about-grid{grid-template-columns:1fr;gap:56px}
   .about-photo-badge{right:0;bottom:-12px}
   .footer{padding:60px 24px}
   .footer-contact{flex-direction:column;gap:14px}
   .footer-line{display:none}
+  .booking-inner{padding:0 20px}
 }
 @media(max-width:600px){
   .date-grid{grid-template-columns:repeat(2,1fr)}
-  .booking-inner{padding:0 20px}
-  .lash-scene{height:55vh}
 }
 @media(prefers-reduced-motion:reduce){
-  .hero-eyebrow,.hero-title,.hero-char,.hero-sub,.hero-actions,.scroll-hint,.hero-line,.hero-img{animation:none!important}
-  .reveal.hidden{opacity:1!important;transform:none!important}
-  .about-photo.anim-ready{animation:none!important}
+  .hero-eyebrow,.hero-title,.hero-char,.hero-sub,.hero-actions,.scroll-hint,.hero-line,.hero-img,.nav-logo,.nav-links,.nav-cta{animation:none!important}
+  .reveal.hidden,.reveal-fast.hidden{opacity:1!important;transform:none!important}
+  .about-photo.clip-ready{animation:none!important}
+  .service-icon{animation:none!important}
 }
 </style>
 </head>
 <body>
 
-<div id="cursor-dot"></div>
-<div id="cursor-ring"></div>
+<div id="cx"></div>
+<div id="cr"></div>
 
 <!-- NAV -->
 <nav class="nav" id="nav">
@@ -256,10 +245,7 @@ body{background:var(--ivory);color:var(--dark);font-family:'Inter',-apple-system
       <button class="btn-primary magnetic" onclick="goTo('booking')"><span>Jetzt buche</span></button>
       <button class="btn-ghost" onclick="goTo('services')">Unsi Behandlige</button>
     </div>
-    <div class="scroll-hint">
-      <span class="scroll-line"></span>
-      <span>Scroll</span>
-    </div>
+    <div class="scroll-hint"><span class="scroll-line"></span><span>Scroll</span></div>
   </div>
   <div class="hero-right">
     <img src="uploads/olivera.jpg" alt="Olivera – Ona Beauty" class="hero-img">
@@ -267,25 +253,16 @@ body{background:var(--ivory);color:var(--dark);font-family:'Inter',-apple-system
   </div>
 </section>
 
-<!-- THREE.JS LASH SCENE -->
-<section class="lash-scene" id="lash-scene">
-  <canvas id="lash-canvas"></canvas>
-  <div class="lash-content">
-    <p class="section-label reveal">Handwerk &amp; Präzision</p>
-    <h2 class="section-heading reveal">Jedi Wimper.<br><em>Perfekt</em> gsetzt.</h2>
-    <p class="lash-desc reveal">Jedi Wimper wird mit chirurgischer Präzision gsetzt – für e Look, wo stundig haltet und natürlich wirkt.</p>
-  </div>
-</section>
-
-<!-- BOOKING -->
+<!-- BOOKING (Three.js canvas as background) -->
 <section class="booking-wrap" id="booking">
+  <canvas id="lash-canvas"></canvas>
   <div class="booking-inner">
-    <p class="booking-label">Termin buche</p>
-    <h2 class="booking-heading" id="booking-heading">In 3 Schritt<em>e</em> zum Termin</h2>
-    <p class="booking-sub" id="booking-sub">Schnell, einfach und direkt – ohne Umwäg.</p>
+    <p class="booking-label reveal-fast">Termin buche</p>
+    <h2 class="booking-heading reveal" id="booking-heading">In 3 Schritt<em>e</em> zum Termin</h2>
+    <p class="booking-sub reveal-fast" id="booking-sub">Schnell, einfach und direkt – ohne Umwäg.</p>
 
     <div id="booking-form-wrap">
-      <div class="booking-steps">
+      <div class="booking-steps reveal">
         <div class="step-row active" id="step-row-1" onclick="goStep(1)">
           <div class="step-num">1</div>
           <div class="step-content">
@@ -315,20 +292,17 @@ body{background:var(--ivory);color:var(--dark);font-family:'Inter',-apple-system
       <div class="booking-panel" id="panel-1">
         <div class="service-picker" id="service-picker"></div>
       </div>
-
       <div class="booking-panel hidden" id="panel-2">
         <div class="date-grid" id="date-grid"></div>
         <div class="time-grid hidden" id="time-grid"></div>
       </div>
-
       <div class="booking-panel hidden" id="panel-3">
         <div class="confirm-form">
           <input class="conf-input" id="inp-name" placeholder="Dine Name" type="text">
           <input class="conf-input" id="inp-phone" placeholder="Handynummer (WhatsApp)" type="tel">
-          <button class="btn-book" id="btn-submit" disabled onclick="submitBooking()">Termin bestätige</button>
+          <button class="btn-book magnetic" id="btn-submit" disabled onclick="submitBooking()">Termin bestätige</button>
         </div>
       </div>
-
       <p class="booking-note">Koschtelos · Ohni Aameldig · 100% koschtelos stornierbar</p>
     </div>
 
@@ -343,50 +317,14 @@ body{background:var(--ivory);color:var(--dark);font-family:'Inter',-apple-system
 <!-- SERVICES -->
 <section class="section" id="services">
   <p class="section-label reveal">Unsi Behandlige</p>
-  <h2 class="section-heading reveal">Was mir<br><em>für dich</em> mache</h2>
+  <h2 class="section-heading" id="sh-services">Was mir<br><em>für dich</em> mache</h2>
   <div class="services-grid">
-    <div class="service-card reveal">
-      <span class="service-icon">✦</span>
-      <h3 class="service-name">Wimpern-Extensions</h3>
-      <p class="service-desc">Voluminösi Wimpere für en natürliche oder dramatische Look – individuell agpasst.</p>
-      <p class="service-price">ab CHF 120</p>
-      <div class="card-glow"></div>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">✦</span>
-      <h3 class="service-name">Microblading</h3>
-      <p class="service-desc">Semipermanente Augebraue-Technik für e perfekte Form und natürliche Haarstriche.</p>
-      <p class="service-price">ab CHF 380</p>
-      <div class="card-glow"></div>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">✦</span>
-      <h3 class="service-name">Wimpernlifting</h3>
-      <p class="service-desc">Natürliches Lifting mit Dauerwirkung – ohni Extensions, maximaler Effekt.</p>
-      <p class="service-price">ab CHF 85</p>
-      <div class="card-glow"></div>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">✦</span>
-      <h3 class="service-name">Brow Styling</h3>
-      <p class="service-desc">Professionells Forme, Zupfe und Färbe für dini perfekte Augebraue.</p>
-      <p class="service-price">ab CHF 45</p>
-      <div class="card-glow"></div>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">✦</span>
-      <h3 class="service-name">Laser Epilasyon</h3>
-      <p class="service-desc">Dauerhafte Haarentfernung mit modernster Lasertechnologie – sanft, effektiv, präzis.</p>
-      <p class="service-price">ab CHF 90</p>
-      <div class="card-glow"></div>
-    </div>
-    <div class="service-card reveal">
-      <span class="service-icon">✦</span>
-      <h3 class="service-name">Brauen Henna</h3>
-      <p class="service-desc">Natürliches Brauen-Tinting für definierten, tiefen Ausdruck – ohne Chemie.</p>
-      <p class="service-price">ab CHF 55</p>
-      <div class="card-glow"></div>
-    </div>
+    <div class="service-card reveal"><span class="service-icon">✦</span><h3 class="service-name">Wimpern-Extensions</h3><p class="service-desc">Voluminösi Wimpere für en natürliche oder dramatische Look – individuell agpasst.</p><p class="service-price">ab CHF 120</p><div class="card-glow"></div></div>
+    <div class="service-card reveal"><span class="service-icon" style="animation-delay:.4s">✦</span><h3 class="service-name">Microblading</h3><p class="service-desc">Semipermanente Augebraue-Technik für e perfekte Form und natürliche Haarstriche.</p><p class="service-price">ab CHF 380</p><div class="card-glow"></div></div>
+    <div class="service-card reveal"><span class="service-icon" style="animation-delay:.8s">✦</span><h3 class="service-name">Wimpernlifting</h3><p class="service-desc">Natürliches Lifting mit Dauerwirkung – ohni Extensions, maximaler Effekt.</p><p class="service-price">ab CHF 85</p><div class="card-glow"></div></div>
+    <div class="service-card reveal"><span class="service-icon" style="animation-delay:1.2s">✦</span><h3 class="service-name">Brow Styling</h3><p class="service-desc">Professionells Forme, Zupfe und Färbe für dini perfekte Augebraue.</p><p class="service-price">ab CHF 45</p><div class="card-glow"></div></div>
+    <div class="service-card reveal"><span class="service-icon" style="animation-delay:1.6s">✦</span><h3 class="service-name">Laser Epilasyon</h3><p class="service-desc">Dauerhafte Haarentfernung mit modernster Lasertechnologie – sanft, effektiv, präzis.</p><p class="service-price">ab CHF 90</p><div class="card-glow"></div></div>
+    <div class="service-card reveal"><span class="service-icon" style="animation-delay:2s">✦</span><h3 class="service-name">Brauen Henna</h3><p class="service-desc">Natürliches Brauen-Tinting für definierten, tiefen Ausdruck – ohne Chemie.</p><p class="service-price">ab CHF 55</p><div class="card-glow"></div></div>
   </div>
 </section>
 
@@ -394,18 +332,18 @@ body{background:var(--ivory);color:var(--dark);font-family:'Inter',-apple-system
 <div class="portfolio-wrap" id="portfolio">
   <div class="portfolio-intro">
     <p class="section-label reveal">Ergebnisse</p>
-    <h2 class="section-heading reveal">Echti<br><em>Verwandlige</em></h2>
+    <h2 class="section-heading reveal" id="sh-portfolio">Echti<br><em>Verwandlige</em></h2>
   </div>
   <div class="portfolio-track" id="portfolio-track">
-    <div class="portfolio-item">
+    <div class="portfolio-item reveal">
       <img src="uploads/rad1.jpg" alt="Wimpern Extensions & Microblading">
       <div class="portfolio-item-overlay"><span class="portfolio-tag">Wimpere &amp; Microblading</span></div>
     </div>
-    <div class="portfolio-item">
+    <div class="portfolio-item reveal">
       <img src="uploads/rad2.jpg" alt="Brow PMU – Vorher/Nachher">
       <div class="portfolio-item-overlay"><span class="portfolio-tag">Brow PMU · Vorher / Nachher</span></div>
     </div>
-    <div class="portfolio-item portfolio-item--cta">
+    <div class="portfolio-item portfolio-item--cta reveal">
       <p>Mehr uf<br>Instagram</p>
       <a href="#" class="btn-primary magnetic"><span>→ Instagram</span></a>
     </div>
@@ -422,421 +360,423 @@ body{background:var(--ivory);color:var(--dark);font-family:'Inter',-apple-system
         <div class="badge-label">Joor Erfahrig</div>
       </div>
     </div>
-    <div class="about-text reveal">
-      <p class="section-label">Über mi</p>
-      <h2 class="section-heading">Ich bi<br><em>Olivera</em></h2>
-      <div class="about-divider"></div>
-      <p class="about-body">Schönheit isch für mi nöd eifach e Job – es isch mini Passion. Sit über acht Joor mache ich Fraue in dr Schwiiz mit hochwertige Behandlige glücklich.</p>
-      <p class="about-body">Jede Kundin isch einzigartig. Drum nimm ich mir d'Zyt, s'Richtige für dich z'finde – sorgfältig, herzlich und mit em Blick fürs Detail.</p>
-      <button class="btn-primary magnetic" onclick="goTo('booking')" style="margin-top:8px"><span>Jetzt Termin buche</span></button>
-      <p class="about-sig">— Olivera</p>
+    <div class="about-text">
+      <p class="section-label reveal-fast">Über mi</p>
+      <h2 class="section-heading reveal" id="sh-about">Ich bi<br><em>Olivera</em></h2>
+      <div class="about-divider reveal"></div>
+      <p class="about-body reveal">Schönheit isch für mi nöd eifach e Job – es isch mini Passion. Sit über acht Joor mache ich Fraue in dr Schwiiz mit hochwertige Behandlige glücklich.</p>
+      <p class="about-body reveal">Jede Kundin isch einzigartig. Drum nimm ich mir d'Zyt, s'Richtige für dich z'finde – sorgfältig, herzlich und mit em Blick fürs Detail.</p>
+      <div class="reveal"><button class="btn-primary magnetic" onclick="goTo('booking')" style="margin-top:8px"><span>Jetzt Termin buche</span></button></div>
+      <p class="about-sig reveal">— Olivera</p>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer class="footer">
-  <p class="footer-logo">ON<span>A</span> BEAUTY</p>
-  <p class="footer-tagline">Beautysalon · Zürich</p>
-  <div class="footer-contact">
+  <p class="footer-logo reveal">ON<span>A</span> BEAUTY</p>
+  <p class="footer-tagline reveal-fast">Beautysalon · Zürich</p>
+  <div class="footer-contact reveal">
     <a href="tel:+41XXXXXXXXX">+41 XX XXX XX XX</a>
     <div class="footer-line"></div>
     <a href="mailto:hello@onabeauty.ch">hello@onabeauty.ch</a>
     <div class="footer-line"></div>
     <a href="#">Instagram</a>
   </div>
-  <p class="footer-copy">© 2026 Ona Beauty · Alli Rächt vorbehalte</p>
+  <p class="footer-copy reveal-fast">© 2026 Ona Beauty · Alli Rächt vorbehalte</p>
 </footer>
 
 <script>
 /* ── NAV ── */
-var nav = document.getElementById('nav');
-window.addEventListener('scroll', function(){ nav.classList.toggle('scrolled', window.scrollY > 40); }, {passive:true});
+var nav=document.getElementById('nav');
+window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>40);},{passive:true});
 
-/* ── SCROLL HELPER ── */
-function goTo(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
-
-/* ── CURSOR ── */
-(function(){
-  if(window.innerWidth < 900) return;
-  var dot = document.getElementById('cursor-dot');
-  var ring = document.getElementById('cursor-ring');
-  var mx=0,my=0,rx=0,ry=0;
-  document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;});
-  (function loop(){
-    requestAnimationFrame(loop);
-    rx+=(mx-rx)*.11; ry+=(my-ry)*.11;
-    dot.style.left=mx+'px'; dot.style.top=my+'px';
-    ring.style.left=rx+'px'; ring.style.top=ry+'px';
-  })();
-  document.querySelectorAll('a,button,.service-card,.portfolio-item,.step-row').forEach(function(el){
-    el.addEventListener('mouseenter',function(){ring.classList.add('hov');});
-    el.addEventListener('mouseleave',function(){ring.classList.remove('hov');});
-  });
-  /* glitter */
-  var last=0;
-  document.addEventListener('mousemove',function(e){
-    var now=Date.now(); if(now-last<55) return; last=now;
-    var g=document.createElement('div');
-    g.className='glitter';
-    var s=(3+Math.random()*4)+'px';
-    g.style.cssText='width:'+s+';height:'+s+';left:'+e.clientX+'px;top:'+e.clientY+'px;';
-    document.body.appendChild(g);
-    if(window.gsap){
-      gsap.to(g,{x:(Math.random()-.5)*28,y:(Math.random()-.5)*28-16,opacity:0,scale:0,duration:.65+Math.random()*.3,ease:'power2.out',onComplete:function(){g.remove();}});
-    } else { setTimeout(function(){g.remove();},700); }
-  });
-})();
+function goTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
 
 /* ── HERO CHAR SPLIT ── */
 (function(){
-  var title = document.getElementById('hero-title');
-  if(!title) return;
-  var html = title.innerHTML;
-  var charIdx = 0;
-  var baseDelay = 0.65; /* starts after eyebrow animation */
-  var out = html.replace(/(<[^>]+>)|(&[^;]+;)|([ ])|([\s\S])/g, function(m, tag, entity, space, ch){
-    if(tag) return tag;
-    if(entity) return entity;
-    if(space) return '<span style="display:inline-block;width:.28em"></span>';
-    var d = (baseDelay + charIdx * 0.038).toFixed(3);
-    charIdx++;
-    return '<span class="hero-char" style="--d:'+d+'s">'+ch+'</span>';
+  var t=document.getElementById('hero-title'); if(!t) return;
+  var idx=0, base=0.65;
+  t.innerHTML=t.innerHTML.replace(/(<[^>]+>)|(&[^;]+;)|( )|([\s\S])/g,function(m,tag,ent,sp,ch){
+    if(tag) return tag; if(ent) return ent;
+    if(sp) return '<span style="display:inline-block;width:.28em"></span>';
+    return '<span class="hero-char" style="--d:'+(base+idx++*.038).toFixed(3)+'s">'+ch+'</span>';
   });
-  title.innerHTML = out;
 })();
 
-/* ── SCROLL REVEAL via IntersectionObserver ── */
+/* ── CURSOR ── */
 (function(){
-  var els = document.querySelectorAll('.reveal');
-  if(!('IntersectionObserver' in window)){
-    els.forEach(function(el){ el.classList.remove('hidden'); });
-    return;
-  }
-  var obs = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting){
-        e.target.classList.remove('hidden');
-        obs.unobserve(e.target);
-      }
-    });
-  },{threshold:0.12});
-  /* stagger service cards */
-  var cardIdx=0;
-  els.forEach(function(el){
+  if(window.innerWidth<900) return;
+  var dot=document.getElementById('cx'),ring=document.getElementById('cr');
+  var mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;});
+  (function loop(){requestAnimationFrame(loop);rx+=(mx-rx)*.11;ry+=(my-ry)*.11;dot.style.left=mx+'px';dot.style.top=my+'px';ring.style.left=rx+'px';ring.style.top=ry+'px';})();
+  document.querySelectorAll('a,button,.service-card,.portfolio-item,.step-row').forEach(function(el){
+    el.addEventListener('mouseenter',function(){ring.classList.add('h');});
+    el.addEventListener('mouseleave',function(){ring.classList.remove('h');});
+  });
+  var last=0;
+  document.addEventListener('mousemove',function(e){
+    var now=Date.now(); if(now-last<55) return; last=now;
+    var g=document.createElement('div'); g.className='glit';
+    var s=(2+Math.random()*4)+'px';
+    g.style.cssText='width:'+s+';height:'+s+';left:'+e.clientX+'px;top:'+e.clientY+'px;opacity:.9';
+    document.body.appendChild(g);
+    if(window.gsap) gsap.to(g,{x:(Math.random()-.5)*26,y:(Math.random()-.5)*26-14,opacity:0,scale:0,duration:.6+Math.random()*.3,ease:'power2.out',onComplete:function(){g.remove();}});
+    else setTimeout(function(){g.remove();},700);
+  });
+})();
+
+/* ── SCROLL REVEAL ── */
+(function(){
+  var reduced=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var allReveal=document.querySelectorAll('.reveal,.reveal-fast');
+  if(!('IntersectionObserver' in window)||reduced){allReveal.forEach(function(el){el.classList.remove('hidden');});return;}
+  var cardDelay=0;
+  allReveal.forEach(function(el){
     el.classList.add('hidden');
-    if(el.classList.contains('service-card')){
-      el.style.transitionDelay=(cardIdx*0.08)+'s';
-      cardIdx++;
-    }
-    obs.observe(el);
+    if(el.classList.contains('service-card')){el.style.transitionDelay=(cardDelay*0.09)+'s';cardDelay++;}
+  });
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.remove('hidden');obs.unobserve(e.target);}
+    });
+  },{threshold:0.1});
+  allReveal.forEach(function(el){obs.observe(el);});
+})();
+
+/* ── SECTION HEADING WORD SPLIT ── */
+(function(){
+  var ids=['sh-services','sh-portfolio','sh-about'];
+  ids.forEach(function(id){
+    var el=document.getElementById(id); if(!el) return;
+    var delay=0;
+    el.innerHTML=el.innerHTML.replace(/(<[^>]+>)|(&[^;]+;)|(\n)|([^\s<&]+)/g,function(m,tag,ent,nl,word){
+      if(tag) return tag; if(ent) return ent; if(nl) return nl;
+      var d=(delay*0.1).toFixed(2);
+      delay++;
+      return '<span class="word-wrap"><span class="word-inner" style="--wd:'+d+'s">'+word+'</span></span> ';
+    });
+    /* trigger via IntersectionObserver */
+    var obs2=new IntersectionObserver(function(entries){
+      if(entries[0].isIntersecting){
+        el.querySelectorAll('.word-inner').forEach(function(w){w.style.animationPlayState='running';});
+        obs2.disconnect();
+      }
+    },{threshold:0.2});
+    /* pause until visible */
+    el.querySelectorAll('.word-inner').forEach(function(w){w.style.animationPlayState='paused';});
+    obs2.observe(el);
   });
 })();
 
 /* ── ABOUT PHOTO CLIP REVEAL ── */
 (function(){
-  var photo = document.getElementById('about-photo');
-  if(!photo) return;
-  var obs = new IntersectionObserver(function(entries){
-    if(entries[0].isIntersecting){
-      photo.classList.add('anim-ready');
-      obs.disconnect();
-    }
-  },{threshold:0.2});
-  obs.observe(photo);
+  var ph=document.getElementById('about-photo'); if(!ph) return;
+  var o=new IntersectionObserver(function(en){if(en[0].isIntersecting){ph.classList.add('clip-ready');o.disconnect();}},{threshold:0.2});
+  o.observe(ph);
 })();
 
 /* ── BADGE COUNTER ── */
 (function(){
-  var badge = document.getElementById('badge-count');
-  if(!badge) return;
-  var obs = new IntersectionObserver(function(entries){
-    if(entries[0].isIntersecting){
-      var start=0, end=8, dur=1400, t0=null;
-      function step(ts){
-        if(!t0) t0=ts;
-        var p=Math.min((ts-t0)/dur,1);
-        badge.textContent = Math.round(p*end);
-        if(p<1) requestAnimationFrame(step);
-        else badge.textContent=end;
-      }
-      requestAnimationFrame(step);
-      obs.disconnect();
+  var b=document.getElementById('badge-count'); if(!b) return;
+  var o=new IntersectionObserver(function(en){
+    if(en[0].isIntersecting){
+      var t0=null;
+      (function step(ts){if(!t0)t0=ts;var p=Math.min((ts-t0)/1400,1);b.textContent=Math.round(p*8);if(p<1)requestAnimationFrame(step);else b.textContent=8;})();
+      o.disconnect();
     }
   },{threshold:0.5});
-  obs.observe(badge);
-})();
-
-/* ── SERVICE CARD 3D TILT ── */
-(function(){
-  if(window.innerWidth < 900) return;
-  document.querySelectorAll('.service-card').forEach(function(card){
-    card.addEventListener('mousemove',function(e){
-      var r=card.getBoundingClientRect();
-      var x=e.clientX-r.left, y=e.clientY-r.top;
-      var rx=((y-r.height/2)/r.height)*-10;
-      var ry=((x-r.width/2)/r.width)*10;
-      card.style.transform='perspective(800px) rotateX('+rx+'deg) rotateY('+ry+'deg) scale3d(1.025,1.025,1.025)';
-      card.style.transition='transform .08s';
-      card.style.setProperty('--mx',(x/r.width*100)+'%');
-      card.style.setProperty('--my',(y/r.height*100)+'%');
-    });
-    card.addEventListener('mouseleave',function(){
-      card.style.transform='perspective(800px) rotateX(0) rotateY(0) scale3d(1,1,1)';
-      card.style.transition='transform .55s cubic-bezier(.16,1,.3,1)';
-    });
-  });
+  o.observe(b);
 })();
 
 /* ── MAGNETIC BUTTONS ── */
 (function(){
-  if(window.innerWidth < 900 || !window.gsap) return;
+  if(window.innerWidth<900||!window.gsap) return;
   document.querySelectorAll('.magnetic').forEach(function(btn){
-    btn.addEventListener('mousemove',function(e){
-      var r=btn.getBoundingClientRect();
-      gsap.to(btn,{x:(e.clientX-r.left-r.width/2)*.3,y:(e.clientY-r.top-r.height/2)*.3,duration:.4,ease:'power2.out'});
-    });
-    btn.addEventListener('mouseleave',function(){
-      gsap.to(btn,{x:0,y:0,duration:.6,ease:'elastic.out(1,.5)'});
-    });
+    btn.addEventListener('mousemove',function(e){var r=btn.getBoundingClientRect();gsap.to(btn,{x:(e.clientX-r.left-r.width/2)*.32,y:(e.clientY-r.top-r.height/2)*.32,duration:.4,ease:'power2.out'});});
+    btn.addEventListener('mouseleave',function(){gsap.to(btn,{x:0,y:0,duration:.65,ease:'elastic.out(1,.5)'});});
   });
 })();
 
-/* ── PORTFOLIO DRAG-SCROLL ── */
+/* ── SERVICE CARD TILT ── */
 (function(){
-  if(window.innerWidth < 900) return;
-  var track = document.getElementById('portfolio-track');
-  if(!track) return;
-  var down=false, startX, sl;
-  track.addEventListener('mousedown',function(e){down=true;startX=e.pageX-track.offsetLeft;sl=track.scrollLeft;track.style.cursor='grabbing';});
-  track.addEventListener('mouseleave',function(){down=false;track.style.cursor='';});
-  track.addEventListener('mouseup',function(){down=false;track.style.cursor='';});
-  track.addEventListener('mousemove',function(e){
-    if(!down) return;
-    e.preventDefault();
-    track.scrollLeft=sl-(e.pageX-track.offsetLeft-startX)*1.4;
+  if(window.innerWidth<900) return;
+  document.querySelectorAll('.service-card').forEach(function(c){
+    c.addEventListener('mousemove',function(e){
+      var r=c.getBoundingClientRect();
+      var x=e.clientX-r.left,y=e.clientY-r.top;
+      c.style.transform='perspective(800px) rotateX('+((y-r.height/2)/r.height*-10)+'deg) rotateY('+((x-r.width/2)/r.width*10)+'deg) scale3d(1.025,1.025,1.025)';
+      c.style.transition='transform .08s';
+      c.style.setProperty('--mx',(x/r.width*100)+'%');
+      c.style.setProperty('--my',(y/r.height*100)+'%');
+    });
+    c.addEventListener('mouseleave',function(){
+      c.style.transform='perspective(800px) rotateX(0) rotateY(0) scale3d(1,1,1)';
+      c.style.transition='transform .55s cubic-bezier(.16,1,.3,1)';
+    });
   });
 })();
 
-/* ── THREE.JS LASH SCENE ── */
+/* ── PORTFOLIO DRAG ── */
+(function(){
+  if(window.innerWidth<900) return;
+  var t=document.getElementById('portfolio-track'); if(!t) return;
+  var dn=false,sx,sl;
+  t.addEventListener('mousedown',function(e){dn=true;sx=e.pageX-t.offsetLeft;sl=t.scrollLeft;});
+  t.addEventListener('mouseleave',function(){dn=false;});
+  t.addEventListener('mouseup',function(){dn=false;});
+  t.addEventListener('mousemove',function(e){if(!dn)return;e.preventDefault();t.scrollLeft=sl-(e.pageX-t.offsetLeft-sx)*1.4;});
+})();
+
+/* ── THREE.JS BEAUTY SCENE ── */
 (function(){
   if(!window.THREE) return;
-  try {
-    var section = document.getElementById('lash-scene');
-    var canvas  = document.getElementById('lash-canvas');
-    var mobile  = window.innerWidth < 900;
-    var W = section.offsetWidth, H = section.offsetHeight;
-
-    var renderer = new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:!mobile});
+  try{
+    var section=document.getElementById('booking');
+    var canvas=document.getElementById('lash-canvas');
+    var mob=window.innerWidth<900;
+    function getSize(){return{w:section.offsetWidth,h:section.offsetHeight};}
+    var sz=getSize();
+    var renderer=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:!mob});
     renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-    renderer.setSize(W,H);
+    renderer.setSize(sz.w,sz.h);
+    var scene=new THREE.Scene();
+    var cam=new THREE.PerspectiveCamera(60,sz.w/sz.h,0.1,100);
+    cam.position.z=7;
 
-    var scene  = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(50,W/H,0.1,100);
-    camera.position.z = 6;
+    /* ─ shared glow texture (radial + cross flare) ─ */
+    function makeGlowTex(r,g,b){
+      var c=document.createElement('canvas'); c.width=128;c.height=128;
+      var ctx=c.getContext('2d');
+      var gr=ctx.createRadialGradient(64,64,0,64,64,64);
+      gr.addColorStop(0,'rgba('+r+','+g+','+b+',1)');
+      gr.addColorStop(.25,'rgba('+r+','+g+','+b+',.7)');
+      gr.addColorStop(.6,'rgba('+r+','+g+','+b+',.2)');
+      gr.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=gr; ctx.fillRect(0,0,128,128);
+      ctx.globalCompositeOperation='lighter';
+      ctx.strokeStyle='rgba('+r+','+g+','+b+',.45)'; ctx.lineWidth=1;
+      [[64,0,64,128],[0,64,128,64],[18,18,110,110],[110,18,18,110]].forEach(function(l){
+        ctx.beginPath();ctx.moveTo(l[0],l[1]);ctx.lineTo(l[2],l[3]);ctx.stroke();
+      });
+      return new THREE.CanvasTexture(c);
+    }
+    var texGold=makeGlowTex(255,220,140);
+    var texRose=makeGlowTex(255,190,180);
+    var texWhite=makeGlowTex(255,248,230);
 
-    scene.add(new THREE.AmbientLight(0xfaf8f5,0.7));
-    var pl1 = new THREE.PointLight(0xc4a26a,4,22);
-    pl1.position.set(3,3,3); scene.add(pl1);
-    var pl2 = new THREE.PointLight(0xd9be93,2,18);
-    pl2.position.set(-4,-2,2); scene.add(pl2);
+    /* ─ LARGE DREAMY BOKEH ORBS ─ */
+    var bokehData=[
+      {x:-4.5, y: 2,   z:-1, s:3.2,  tex:texGold,  ph:0,    spd:.18},
+      {x: 4.2, y:-1.5, z:-2, s:2.8,  tex:texRose,  ph:1.1,  spd:.22},
+      {x:-1,   y:-3,   z:-1, s:2.4,  tex:texGold,  ph:2.3,  spd:.15},
+      {x: 3.5, y: 3,   z:-3, s:4,    tex:texWhite, ph:0.7,  spd:.12},
+      {x:-5,   y:-1,   z:-2, s:2,    tex:texRose,  ph:1.8,  spd:.25},
+      {x: 1.5, y: 3.5, z:-1, s:1.8,  tex:texGold,  ph:3.0,  spd:.2}
+    ];
+    if(mob){ bokehData=bokehData.slice(0,3); bokehData.forEach(function(b){b.s*=.7;}); }
+    var bokehSprites=bokehData.map(function(d){
+      var mat=new THREE.SpriteMaterial({map:d.tex,transparent:true,opacity:.18,depthWrite:false,blending:THREE.AdditiveBlending});
+      var sp=new THREE.Sprite(mat);
+      sp.position.set(d.x,d.y,d.z); sp.scale.set(d.s,d.s,1);
+      sp.userData={ox:d.x,oy:d.y,ph:d.ph,spd:d.spd,mat:mat};
+      scene.add(sp); return sp;
+    });
 
-    var group = new THREE.Group();
-    var lashes=[], cnt=mobile?7:14;
-
+    /* ─ GOLD TAPERED LASH geometry ─ */
     function makeLash(ox,oy,oz,sc,rz){
-      var pts=[
+      /* More dramatic curl: rises and curls back */
+      var curve=new THREE.CatmullRomCurve3([
         new THREE.Vector3(0,0,0),
-        new THREE.Vector3(.06*sc,.35*sc,.08),
-        new THREE.Vector3(.13*sc,.75*sc,.18),
-        new THREE.Vector3(.16*sc,1.15*sc,.1),
-        new THREE.Vector3(.1*sc,1.55*sc,.02),
-        new THREE.Vector3(.01*sc,1.85*sc,-.04)
-      ];
-      var geo=new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),22,.02*sc,7,false);
-      var mat=new THREE.MeshStandardMaterial({color:0x1c1a17,metalness:.5,roughness:.4});
+        new THREE.Vector3(.12*sc,.5*sc,.08),
+        new THREE.Vector3(.24*sc,1.1*sc,.2),
+        new THREE.Vector3(.28*sc,1.65*sc,.15),
+        new THREE.Vector3(.18*sc,2.1*sc,.04),
+        new THREE.Vector3(.04*sc,2.4*sc,-.06)
+      ]);
+      var N=28, frames=curve.computeFrenetFrames(N,false), pts=curve.getSpacedPoints(N);
+      var baseW=0.065*sc, verts=[],uvs=[],inds=[];
+      for(var i=0;i<=N;i++){
+        var tt=i/N, hw=baseW*Math.pow(1-tt,.6)*.5;
+        var p=pts[i],bn=frames.binormals[i];
+        verts.push(p.x-bn.x*hw,p.y-bn.y*hw,p.z-bn.z*hw, p.x+bn.x*hw,p.y+bn.y*hw,p.z+bn.z*hw);
+        uvs.push(0,tt,1,tt);
+        if(i<N){var a=i*2;inds.push(a,a+2,a+1,a+1,a+2,a+3);}
+      }
+      var geo=new THREE.BufferGeometry();
+      geo.setAttribute('position',new THREE.BufferAttribute(new Float32Array(verts),3));
+      geo.setAttribute('uv',new THREE.BufferAttribute(new Float32Array(uvs),2));
+      geo.setIndex(inds); geo.computeVertexNormals();
+      /* GOLD material — visible on dark background */
+      var mat=new THREE.MeshStandardMaterial({
+        color:0xc8a256, metalness:.85, roughness:.1, side:THREE.DoubleSide,
+        emissive:0x3a2a08, emissiveIntensity:.4
+      });
       var m=new THREE.Mesh(geo,mat);
       m.position.set(ox,oy,oz); m.rotation.z=rz;
-      m.userData.spd=.3+Math.random()*.5;
-      m.userData.amp=.04+Math.random()*.08;
-      m.userData.ph=Math.random()*Math.PI*2;
+      m.userData={ph:Math.random()*Math.PI*2,fs:.4+Math.random()*.5,rs:(Math.random()-.5)*.012,rph:Math.random()*Math.PI*2};
       return m;
     }
-
-    for(var i=0;i<cnt;i++){
-      var l=makeLash((Math.random()-.5)*7,(Math.random()-.5)*4,(Math.random()-.5)*2.5,.55+Math.random()*.9,(Math.random()-.5)*.7);
-      lashes.push(l); group.add(l);
+    var lashGroup=new THREE.Group(), lashes=[], lashCnt=mob?8:18;
+    for(var i=0;i<lashCnt;i++){
+      var l=makeLash((Math.random()-.5)*9,(Math.random()-.5)*4.5,(Math.random()-.5)*2,.5+Math.random()*1,(Math.random()-.5)*.8);
+      lashes.push(l); lashGroup.add(l);
     }
-    scene.add(group);
+    scene.add(lashGroup);
 
-    /* particles */
-    var pc=mobile?35:85;
-    var pos=new Float32Array(pc*3), col=new Float32Array(pc*3);
-    for(var i=0;i<pc;i++){
-      pos[i*3]=(Math.random()-.5)*9; pos[i*3+1]=(Math.random()-.5)*7; pos[i*3+2]=(Math.random()-.5)*4;
-      col[i*3]=.72+Math.random()*.25; col[i*3+1]=.58+Math.random()*.15; col[i*3+2]=.3+Math.random()*.2;
+    /* ─ lighting (warm for gold) ─ */
+    scene.add(new THREE.AmbientLight(0xfff0d0,.8));
+    var pl1=new THREE.PointLight(0xffd080,6,20); pl1.position.set(3,4,4); scene.add(pl1);
+    var pl2=new THREE.PointLight(0xffb8c8,3,16); pl2.position.set(-5,-2,3); scene.add(pl2);
+    var pl3=new THREE.PointLight(0xffffff,2,12); pl3.position.set(0,0,6); scene.add(pl3);
+
+    /* ─ SPARKLE PARTICLES ─ */
+    function makeSparkles(cnt,size,spread,tex,phase){
+      var pos=new Float32Array(cnt*3);
+      for(var i=0;i<cnt;i++){pos[i*3]=(Math.random()-.5)*spread;pos[i*3+1]=(Math.random()-.5)*spread*.7;pos[i*3+2]=(Math.random()-.5)*3;}
+      var geo=new THREE.BufferGeometry(); geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+      var mat=new THREE.PointsMaterial({size:size,map:tex,transparent:true,opacity:.9,depthWrite:false,blending:THREE.AdditiveBlending});
+      var pts=new THREE.Points(geo,mat); pts.userData={phase:phase,mat:mat}; return pts;
     }
-    var pg=new THREE.BufferGeometry();
-    pg.setAttribute('position',new THREE.BufferAttribute(pos,3));
-    pg.setAttribute('color',new THREE.BufferAttribute(col,3));
-    var pm=new THREE.PointsMaterial({size:.045,vertexColors:true,transparent:true,opacity:.8,sizeAttenuation:true});
-    var pts3=new THREE.Points(pg,pm);
-    scene.add(pts3);
+    var spkBase=mob?20:50;
+    var sp1=makeSparkles(spkBase,     .12,12,texGold,0);
+    var sp2=makeSparkles(spkBase*.6,  .2, 10,texWhite,1.4);
+    var sp3=makeSparkles(spkBase*.35, .28, 8,texRose,2.8);
+    [sp1,sp2,sp3].forEach(function(s){scene.add(s);});
 
-    /* entry scale-in when visible */
-    group.scale.set(.3,.3,.3);
+    /* ─ FLOATING GOLD DIAMOND shapes ─ */
+    var diamonds=[]; var diaCnt=mob?4:9;
+    for(var i=0;i<diaCnt;i++){
+      var dg=new THREE.OctahedronGeometry(.06+Math.random()*.1,0);
+      var dm=new THREE.MeshStandardMaterial({color:0xd4a830,metalness:.95,roughness:.05,emissive:0x7a5010,emissiveIntensity:.5});
+      var dd=new THREE.Mesh(dg,dm);
+      dd.position.set((Math.random()-.5)*8,(Math.random()-.5)*5,(Math.random()-.5)*2);
+      dd.userData={ph:Math.random()*Math.PI*2,rs:(.5+Math.random())*.02,fy:.015+Math.random()*.02};
+      scene.add(dd); diamonds.push(dd);
+    }
+
+    /* ─ entry animation ─ */
+    lashGroup.scale.set(.01,.01,.01);
     var entered=false;
-    var obs=new IntersectionObserver(function(en){
-      if(en[0].isIntersecting&&!entered){
-        entered=true;
-        if(window.gsap){
-          gsap.to(group.scale,{x:1,y:1,z:1,duration:1.8,ease:'elastic.out(1,.5)'});
-        } else {
-          group.scale.set(1,1,1);
-        }
+    new IntersectionObserver(function(en){
+      if(en[0].isIntersecting&&!entered){entered=true;
+        if(window.gsap) gsap.to(lashGroup.scale,{x:1,y:1,z:1,duration:2.2,ease:'elastic.out(1,.4)'});
+        else lashGroup.scale.set(1,1,1);
       }
-    },{threshold:.2});
-    obs.observe(section);
+    },{threshold:.1}).observe(section);
 
-    /* mouse */
     var mx=0,my=0;
     document.addEventListener('mousemove',function(e){mx=(e.clientX/window.innerWidth)*2-1;my=-(e.clientY/window.innerHeight)*2+1;});
+    document.addEventListener('touchmove',function(e){if(e.touches[0]){mx=(e.touches[0].clientX/window.innerWidth)*2-1;my=-(e.touches[0].clientY/window.innerHeight)*2+1;}},{passive:true});
+
+    var visible=false;
+    new IntersectionObserver(function(en){visible=en[0].isIntersecting;},{threshold:.05}).observe(section);
 
     var clock=new THREE.Clock();
-    var visible=false;
-    var visObs=new IntersectionObserver(function(en){visible=en[0].isIntersecting;},{threshold:.05});
-    visObs.observe(section);
-
-    (function animate(){
-      requestAnimationFrame(animate);
+    (function loop(){
+      requestAnimationFrame(loop);
       var t=clock.getElapsedTime();
-      if(visible){
-        lashes.forEach(function(l){
-          l.position.y+=Math.sin(t*l.userData.spd+l.userData.ph)*.0006;
-          l.rotation.z+=Math.sin(t*.3+l.userData.ph)*.0002;
-        });
-        group.rotation.y=mx*.22+Math.sin(t*.18)*.07;
-        group.rotation.x=my*.1+Math.sin(t*.14)*.04;
-        pl1.position.x=Math.sin(t*.5)*4;
-        pl1.position.y=Math.cos(t*.4)*3;
-        pl1.intensity=3.5+Math.sin(t*1.2)*.6;
-        pts3.rotation.y=t*.04;
-        pm.opacity=.6+Math.sin(t*.9)*.2;
-      }
-      renderer.render(scene,camera);
+      if(!visible){renderer.render(scene,cam);return;}
+
+      /* bokeh orbs: drift + pulse opacity+scale */
+      bokehSprites.forEach(function(sp){
+        var d=sp.userData;
+        sp.position.x=d.ox+Math.sin(t*d.spd+d.ph)*.6;
+        sp.position.y=d.oy+Math.cos(t*d.spd*.8+d.ph)*.5;
+        var pulse=.15+.08*Math.sin(t*d.spd*2+d.ph);
+        d.mat.opacity=pulse;
+        var sc=sp.scale.x+((.9+.3*Math.sin(t*d.spd+d.ph))*sp.userData.baseS||0);
+        if(!sp.userData.baseS) sp.userData.baseS=sp.scale.x;
+        sp.scale.set(sp.userData.baseS*(1+.15*Math.sin(t*d.spd+d.ph)),sp.userData.baseS*(1+.15*Math.sin(t*d.spd+d.ph)),1);
+      });
+
+      /* gold lashes: float + continuous rotation */
+      lashes.forEach(function(l){
+        var d=l.userData;
+        l.position.y+=Math.sin(t*d.fs+d.ph)*.001;
+        l.position.x+=Math.cos(t*d.fs*.6+d.ph)*.0005;
+        l.rotation.z+=d.rs;
+        l.rotation.x=Math.sin(t*.3+d.rph)*.1;
+      });
+      lashGroup.rotation.y+=(mx*.25+Math.sin(t*.1)*.12-lashGroup.rotation.y)*.025;
+      lashGroup.rotation.x+=(my*.12+Math.sin(t*.08)*.05-lashGroup.rotation.x)*.025;
+
+      /* lights orbit */
+      pl1.position.x=Math.sin(t*.4)*4; pl1.position.y=Math.cos(t*.35)*3;
+      pl1.intensity=5+Math.sin(t*.9)*1.5;
+      pl2.position.x=Math.cos(t*.28)*5; pl2.position.y=Math.sin(t*.32)*2.5;
+
+      /* sparkles twinkle */
+      sp1.userData.mat.opacity=.7+.3*Math.sin(t*1.1+sp1.userData.phase);
+      sp2.userData.mat.opacity=.5+.45*Math.sin(t*.75+sp2.userData.phase);
+      sp3.userData.mat.opacity=.65+.3*Math.sin(t*1.5+sp3.userData.phase);
+      sp1.rotation.z=t*.012; sp2.rotation.z=-t*.009;
+
+      /* diamonds spin + float */
+      diamonds.forEach(function(d){
+        d.rotation.x+=d.userData.rs; d.rotation.y+=d.userData.rs*.7;
+        d.position.y+=Math.sin(t*d.userData.fy*2+d.userData.ph)*.003;
+      });
+
+      renderer.render(scene,cam);
     })();
 
     window.addEventListener('resize',function(){
-      var w=section.offsetWidth, h=section.offsetHeight;
-      renderer.setSize(w,h);
-      camera.aspect=w/h;
-      camera.updateProjectionMatrix();
+      var s=getSize(); renderer.setSize(s.w,s.h); cam.aspect=s.w/s.h; cam.updateProjectionMatrix();
     });
-  } catch(e){ console.warn('Three.js lash scene error:',e); }
+  }catch(e){console.warn('3D scene:',e);}
 })();
 
 /* ── BOOKING FORM ── */
 (function(){
-  var SERVICES=['Wimpern-Extensions','Microblading','Wimpernlifting','Brow Styling','Laser Epilasyon','Brauen Henna'];
+  var SVCS=['Wimpern-Extensions','Microblading','Wimpernlifting','Brow Styling','Laser Epilasyon','Brauen Henna'];
   var DATES=[{n:'Mo',d:'5. Mai'},{n:'Di',d:'6. Mai'},{n:'Mi',d:'7. Mai'},{n:'Do',d:'8. Mai'},{n:'Fr',d:'9. Mai'},{n:'Sa',d:'10. Mai'},{n:'Mo',d:'12. Mai'},{n:'Di',d:'13. Mai'}];
   var TIMES=['09:00','10:30','12:00','13:30','15:00','16:30'];
-  var selSvc=null, selDate=null, selTime=null;
+  var selSvc=null,selDate=null,selTime=null;
 
-  /* populate service chips */
   var picker=document.getElementById('service-picker');
-  SERVICES.forEach(function(s){
-    var b=document.createElement('button');
-    b.className='service-chip'; b.textContent=s;
-    b.onclick=function(){
-      picker.querySelectorAll('.service-chip').forEach(function(c){c.classList.remove('chosen');});
-      b.classList.add('chosen');
-      selSvc=s;
-      document.getElementById('step1-desc').textContent=s;
-      markDone(1); showPanel(2); activateRow(2);
-    };
+  SVCS.forEach(function(s){
+    var b=document.createElement('button');b.className='service-chip';b.textContent=s;
+    b.onclick=function(){picker.querySelectorAll('.service-chip').forEach(function(c){c.classList.remove('chosen');});b.classList.add('chosen');selSvc=s;document.getElementById('step1-desc').textContent=s;markDone(1);showPanel(2);activateRow(2);};
     picker.appendChild(b);
   });
 
-  /* populate dates */
   var dg=document.getElementById('date-grid');
   DATES.forEach(function(d,i){
-    var b=document.createElement('button');
-    b.className='date-btn';
+    var b=document.createElement('button');b.className='date-btn';
     b.innerHTML='<span class="dname">'+d.n+'</span>'+d.d;
-    b.onclick=function(){
-      dg.querySelectorAll('.date-btn').forEach(function(x){x.classList.remove('picked');});
-      b.classList.add('picked');
-      selDate=i;
-      document.getElementById('time-grid').classList.remove('hidden');
-      updateStep2Desc();
-    };
+    b.onclick=function(){dg.querySelectorAll('.date-btn').forEach(function(x){x.classList.remove('picked');});b.classList.add('picked');selDate=i;document.getElementById('time-grid').classList.remove('hidden');updateS2();};
     dg.appendChild(b);
   });
 
-  /* populate times */
   var tg=document.getElementById('time-grid');
   TIMES.forEach(function(t){
-    var b=document.createElement('button');
-    b.className='time-btn'; b.textContent=t;
-    b.onclick=function(){
-      tg.querySelectorAll('.time-btn').forEach(function(x){x.classList.remove('picked');});
-      b.classList.add('picked');
-      selTime=t;
-      updateStep2Desc();
-      markDone(2); showPanel(3); activateRow(3);
-    };
+    var b=document.createElement('button');b.className='time-btn';b.textContent=t;
+    b.onclick=function(){tg.querySelectorAll('.time-btn').forEach(function(x){x.classList.remove('picked');});b.classList.add('picked');selTime=t;updateS2();markDone(2);showPanel(3);activateRow(3);};
     tg.appendChild(b);
   });
 
-  function updateStep2Desc(){
-    if(selDate!==null&&selTime){
-      document.getElementById('step2-desc').textContent=DATES[selDate].n+', '+DATES[selDate].d+' · '+selTime;
-    }
-  }
+  function updateS2(){if(selDate!==null&&selTime)document.getElementById('step2-desc').textContent=DATES[selDate].n+', '+DATES[selDate].d+' · '+selTime;}
+  function showPanel(n){[1,2,3].forEach(function(i){document.getElementById('panel-'+i).classList.toggle('hidden',i!==n);});}
+  function activateRow(n){[1,2,3].forEach(function(i){document.getElementById('step-row-'+i).classList.toggle('active',i===n);});}
+  function markDone(n){document.getElementById('step-row-'+n).classList.add('done');}
 
-  function showPanel(n){
-    [1,2,3].forEach(function(i){
-      document.getElementById('panel-'+i).classList.toggle('hidden',i!==n);
-    });
-  }
+  window.goStep=function(n){if(n===1||(n===2&&selSvc)||(n===3&&selSvc&&selDate!==null&&selTime)){showPanel(n);activateRow(n);}};
 
-  function activateRow(n){
-    [1,2,3].forEach(function(i){
-      document.getElementById('step-row-'+i).classList.toggle('active',i===n);
-    });
-  }
+  var iN=document.getElementById('inp-name'),iP=document.getElementById('inp-phone'),bS=document.getElementById('btn-submit');
+  function chk(){bS.disabled=!(iN.value.trim()&&iP.value.trim());}
+  iN.addEventListener('input',chk); iP.addEventListener('input',chk);
 
-  function markDone(n){
-    document.getElementById('step-row-'+n).classList.add('done');
-  }
-
-  /* allow going back to previous steps */
-  window.goStep=function(n){
-    if(n===1||(n===2&&selSvc)||(n===3&&selSvc&&selDate!==null&&selTime)){
-      showPanel(n); activateRow(n);
-    }
-  };
-
-  /* inputs → enable submit */
-  var inpName=document.getElementById('inp-name');
-  var inpPhone=document.getElementById('inp-phone');
-  var btnSub=document.getElementById('btn-submit');
-  function checkInputs(){
-    btnSub.disabled=!(inpName.value.trim()&&inpPhone.value.trim());
-  }
-  inpName.addEventListener('input',checkInputs);
-  inpPhone.addEventListener('input',checkInputs);
-
-  /* submit */
   window.submitBooking=function(){
-    var name=inpName.value.trim(), phone=inpPhone.value.trim();
+    var name=iN.value.trim(),phone=iP.value.trim();
     if(!name||!phone) return;
     document.getElementById('booking-form-wrap').style.display='none';
     document.getElementById('booking-heading').textContent='Danke schön!';
     document.getElementById('booking-sub').style.display='none';
-    var succ=document.getElementById('booking-success');
+    var s=document.getElementById('booking-success');
     document.getElementById('success-desc').innerHTML='Mir freue uns uf dich, '+name+'!<br>Olivera meldet sich bald per WhatsApp.';
-    succ.classList.add('visible');
+    s.classList.add('visible');
   };
 })();
 </script>
