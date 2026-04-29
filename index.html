@@ -3,16 +3,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Ona Beauty – Olivera</title>
-<meta name="description" content="Professionelli Beauty-Behandlige in Zürich – Wimpern-Extensions, Microblading, Wimpernlifting, Laser Epilasyon. Buche jetzt deinen Termin.">
+<meta name="description" content="Professionelli Beauty-Behandlige in Zürich – Wimpern-Extensions, Microblading, Wimpernlifting, Laser Epilasyon.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 
 <style>
 :root {
@@ -21,837 +19,224 @@
   --blush:   #ede3dc;
   --gold:    #c4a26a;
   --gold-lt: #d9be93;
-  --gold-dk: #a8864e;
   --dark:    #1c1a17;
   --mid:     #6b6460;
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:auto}
+body{background:var(--ivory);color:var(--dark);font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-weight:300;overflow-x:hidden;cursor:none}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--ivory)}
+::-webkit-scrollbar-thumb{background:var(--gold-lt);border-radius:2px}
 
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+/* ─── KEYFRAMES ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@keyframes scaleY{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes charRise{from{opacity:0;transform:translateY(110%)}to{opacity:1;transform:none}}
+@keyframes imgReveal{from{opacity:0;transform:scale(1.06)}to{opacity:1;transform:scale(1)}}
+@keyframes clipReveal{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0% 0)}}
+@keyframes countUp{from{opacity:0;transform:scale(0.6)}to{opacity:1;transform:scale(1)}}
 
-html { scroll-behavior: auto; }
+/* ─── CURSOR ─── */
+#cursor-dot,#cursor-ring{position:fixed;border-radius:50%;pointer-events:none;z-index:99999;will-change:transform;top:0;left:0}
+#cursor-dot{width:6px;height:6px;background:var(--gold);transform:translate(-50%,-50%)}
+#cursor-ring{width:34px;height:34px;border:1.5px solid var(--gold);opacity:.65;transform:translate(-50%,-50%);transition:width .22s,height .22s,opacity .22s,background .22s}
+#cursor-ring.hov{width:56px;height:56px;opacity:1;background:rgba(196,162,106,.06)}
+.glitter{position:fixed;border-radius:50%;pointer-events:none;z-index:99998;background:var(--gold)}
 
-body {
-  background: var(--ivory);
-  color: var(--dark);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-weight: 300;
-  overflow-x: hidden;
-  cursor: none;
-}
+/* ─── NAV ─── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:26px 60px;transition:background .4s,padding .4s,box-shadow .4s}
+.nav.scrolled{background:rgba(250,248,245,.93);backdrop-filter:blur(16px);padding:14px 60px;box-shadow:0 1px 0 rgba(196,162,106,.12)}
+.nav-logo{font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;letter-spacing:8px;text-decoration:none;color:var(--dark)}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:32px}
+.nav-links a{font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--mid);transition:color .2s}
+.nav-links a:hover{color:var(--dark)}
+.nav-cta{font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--dark);border:1px solid rgba(196,162,106,.4);padding:10px 20px;transition:background .25s,color .25s,border-color .25s;cursor:none}
+.nav-cta:hover{background:var(--gold);color:#fff;border-color:var(--gold)}
 
-body.no-custom-cursor { cursor: auto; }
+/* ─── HERO ─── */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden}
+.hero-line{position:absolute;left:58px;top:10vh;bottom:10vh;width:1px;background:linear-gradient(to bottom,transparent,var(--gold-lt),transparent);transform-origin:top;animation:scaleY 1.4s .4s both ease}
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:140px 60px 80px 110px;position:relative;z-index:2}
+.hero-eyebrow{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:28px;animation:fadeUp .9s .5s both}
+.hero-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(52px,6vw,88px);font-weight:300;line-height:1.06;letter-spacing:-1px;margin-bottom:28px}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-char{display:inline-block;animation:charRise .5s both;animation-delay:var(--d,0s)}
+.hero-sub{font-size:15px;line-height:1.8;color:var(--mid);max-width:380px;margin-bottom:44px;animation:fadeUp .9s 1.7s both}
+.hero-actions{display:flex;gap:16px;align-items:center;animation:fadeUp .8s 2s both}
+.scroll-hint{display:flex;align-items:center;gap:12px;margin-top:56px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--mid);animation:fadeUp .7s 2.4s both}
+.scroll-line{display:block;width:32px;height:1px;background:var(--gold-lt)}
+.hero-right{position:relative;overflow:hidden}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;animation:imgReveal 1.4s .2s both}
+.hero-img-overlay{position:absolute;inset:0;background:linear-gradient(to right,var(--ivory) 0%,transparent 35%),linear-gradient(to bottom,transparent 55%,var(--ivory) 100%)}
 
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--ivory); }
-::-webkit-scrollbar-thumb { background: var(--gold-lt); border-radius: 2px; }
+/* ─── BUTTONS ─── */
+.btn-primary{display:inline-block;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:#fff;background:var(--dark);border:none;padding:16px 32px;cursor:none;position:relative;overflow:hidden;transition:transform .2s}
+.btn-primary::after{content:'';position:absolute;inset:0;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.btn-primary:hover::after{transform:scaleX(1)}
+.btn-primary span{position:relative;z-index:1}
+.btn-ghost{display:inline-block;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--mid);background:none;border:none;padding:16px 0;cursor:none;transition:color .2s}
+.btn-ghost:hover{color:var(--dark)}
 
-/* ── CUSTOM CURSOR ── */
-#cursor-dot,
-#cursor-ring {
-  position: fixed;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99999;
-  transform: translate(-50%, -50%);
-  transition: opacity 0.3s;
-}
-#cursor-dot {
-  width: 6px;
-  height: 6px;
-  background: var(--gold);
-  top: 0; left: 0;
-  will-change: transform;
-}
-#cursor-ring {
-  width: 36px;
-  height: 36px;
-  border: 1.5px solid var(--gold);
-  top: 0; left: 0;
-  opacity: 0.7;
-  will-change: transform;
-  transition: width 0.25s var(--ease-out), height 0.25s var(--ease-out), opacity 0.25s, border-color 0.25s;
-}
-#cursor-ring.hovered {
-  width: 60px;
-  height: 60px;
-  opacity: 1;
-  border-color: var(--gold-lt);
-  background: rgba(196,162,106,0.06);
-}
-.glitter {
-  position: fixed;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99998;
-  transform: translate(-50%,-50%);
-  background: var(--gold);
-}
+/* ─── LASH 3D SECTION ─── */
+.lash-scene{position:relative;height:82vh;background:var(--dark);overflow:hidden;display:flex;align-items:center}
+#lash-canvas{position:absolute;inset:0;width:100%;height:100%}
+.lash-content{position:relative;z-index:2;padding:0 110px;max-width:580px}
+.lash-content .section-label{color:var(--gold)}
+.lash-content .section-heading{color:var(--ivory)}
+.lash-content .section-heading em{color:var(--gold)}
+.lash-desc{font-size:15px;line-height:1.85;color:rgba(250,248,245,.45);margin-top:20px;max-width:400px}
 
-/* ── NAVIGATION ── */
-.nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 28px 48px;
-  transition: background 0.5s, backdrop-filter 0.5s, padding 0.4s, box-shadow 0.4s;
-}
-.nav.scrolled {
-  background: rgba(250,248,245,0.92);
-  backdrop-filter: blur(16px);
-  padding: 16px 48px;
-  box-shadow: 0 1px 0 rgba(196,162,106,0.12);
-}
-.nav-logo {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 20px;
-  font-weight: 400;
-  letter-spacing: 8px;
-  text-decoration: none;
-  color: var(--dark);
-}
-.nav-logo span { color: var(--gold); }
-.nav-links {
-  display: flex;
-  gap: 36px;
-}
-.nav-links a {
-  font-size: 12px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: var(--mid);
-  transition: color 0.2s;
-}
-.nav-links a:hover { color: var(--dark); }
-.nav-cta {
-  font-size: 11px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: var(--dark);
-  border: 1px solid rgba(196,162,106,0.4);
-  padding: 10px 22px;
-  transition: background 0.25s, color 0.25s, border-color 0.25s;
-}
-.nav-cta:hover {
-  background: var(--gold);
-  color: #fff;
-  border-color: var(--gold);
-}
+/* ─── SCROLL REVEALS ─── */
+.reveal{transition:opacity .85s ease,transform .85s ease}
+.reveal.hidden{opacity:0;transform:translateY(36px)}
 
-/* ── HERO ── */
-.hero {
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  position: relative;
-  overflow: hidden;
-}
-.hero-line {
-  position: absolute;
-  left: 48px;
-  top: 12vh;
-  bottom: 12vh;
-  width: 1px;
-  background: linear-gradient(to bottom, transparent, var(--gold-lt), transparent);
-  transform-origin: top;
-  transform: scaleY(0);
-}
-.hero-left {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 140px 60px 80px 100px;
-  position: relative;
-  z-index: 2;
-}
-.hero-eyebrow {
-  font-size: 11px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--gold);
-  opacity: 0;
-  transform: translateY(20px);
-  margin-bottom: 28px;
-}
-.hero-title {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(52px, 6vw, 88px);
-  font-weight: 300;
-  line-height: 1.05;
-  letter-spacing: -1px;
-  margin-bottom: 28px;
-  overflow: hidden;
-}
-.hero-title em { font-style: italic; color: var(--gold); }
-.hero-char {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(100%);
-  will-change: transform, opacity;
-}
-.hero-word { overflow: hidden; display: inline-block; }
-.hero-sub {
-  font-size: 15px;
-  line-height: 1.8;
-  color: var(--mid);
-  max-width: 380px;
-  margin-bottom: 44px;
-  opacity: 0;
-  transform: translateY(24px);
-}
-.hero-actions {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  opacity: 0;
-  transform: translateY(20px);
-}
-.scroll-hint {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 60px;
-  opacity: 0;
-  font-size: 11px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--mid);
-}
-.scroll-line {
-  display: block;
-  width: 32px;
-  height: 1px;
-  background: var(--gold-lt);
-}
-.hero-right {
-  position: relative;
-  overflow: hidden;
-}
-.hero-img-frame {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-.hero-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  opacity: 0;
-  transform: scale(1.08);
-  transition: opacity 0.6s, transform 0s;
-  will-change: transform;
-}
-.hero-img.loaded { opacity: 1; }
-.hero-img-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to right, var(--ivory) 0%, transparent 30%),
-              linear-gradient(to bottom, transparent 60%, var(--ivory) 100%);
-}
+/* ─── SECTIONS ─── */
+.section{padding:110px 100px;max-width:1400px;margin:0 auto}
+.section-label{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:block}
+.section-heading{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(36px,4vw,58px);font-weight:300;line-height:1.1;margin-bottom:60px}
+.section-heading em{font-style:italic;color:var(--gold)}
 
-/* ── BUTTONS ── */
-.btn-primary {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: #fff;
-  background: var(--dark);
-  border: none;
-  padding: 16px 32px;
-  cursor: none;
-  transition: background 0.3s, transform 0.2s;
-  position: relative;
-  overflow: hidden;
-}
-.btn-primary::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--gold);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s var(--ease-out);
-}
-.btn-primary:hover::after { transform: scaleX(1); }
-.btn-primary span { position: relative; z-index: 1; }
-.btn-ghost {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: var(--mid);
-  background: none;
-  border: none;
-  padding: 16px 0;
-  cursor: none;
-  transition: color 0.2s;
-}
-.btn-ghost:hover { color: var(--dark); }
+/* ─── BOOKING ─── */
+.booking-wrap{background:var(--dark);padding:110px 0;color:#fff}
+.booking-inner{max-width:660px;margin:0 auto;padding:0 40px}
+.booking-label{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:block}
+.booking-heading{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(32px,4vw,50px);font-weight:300;margin-bottom:10px}
+.booking-heading em{font-style:italic;color:var(--gold)}
+.booking-sub{font-size:14px;color:rgba(255,255,255,.4);margin-bottom:44px;line-height:1.7}
+.booking-steps{display:flex;flex-direction:column;gap:2px;margin-bottom:28px}
+.step-row{display:flex;align-items:center;gap:20px;padding:16px 22px;border:1px solid rgba(255,255,255,.06);cursor:none;transition:border-color .25s,background .25s}
+.step-row.active{border-color:rgba(196,162,106,.3);background:rgba(196,162,106,.04)}
+.step-row.done .step-num{background:var(--gold);border-color:var(--gold);color:#fff}
+.step-num{width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;transition:background .25s,border-color .25s}
+.step-content{flex:1}
+.step-title{font-size:13px;font-weight:400;letter-spacing:.5px}
+.step-desc{font-size:12px;color:rgba(255,255,255,.35);margin-top:2px}
+.step-arrow{font-size:16px;color:rgba(255,255,255,.2)}
+.booking-panel{margin-bottom:20px}
+.booking-panel.hidden{display:none}
+.service-picker{display:flex;flex-wrap:wrap;gap:10px}
+.service-chip{font-size:12px;letter-spacing:1px;color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.12);background:none;padding:10px 20px;cursor:none;transition:border-color .25s,color .25s,background .25s;font-family:inherit}
+.service-chip:hover,.service-chip.chosen{border-color:var(--gold);color:var(--gold);background:rgba(196,162,106,.06)}
+.date-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.date-btn{background:none;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);padding:12px 8px;font-size:12px;cursor:none;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .2s;font-family:inherit}
+.date-btn .dname{font-size:10px;color:rgba(255,255,255,.3);letter-spacing:1px}
+.date-btn:hover,.date-btn.picked{border-color:var(--gold);color:var(--gold-lt)}
+.time-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.time-grid.hidden{display:none}
+.time-btn{background:none;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);padding:12px;font-size:12px;cursor:none;transition:all .2s;font-family:inherit}
+.time-btn:hover,.time-btn.picked{border-color:var(--gold);color:var(--gold-lt)}
+.confirm-form{display:flex;flex-direction:column;gap:12px}
+.conf-input{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:#fff;padding:14px 18px;font-size:13px;font-family:inherit;outline:none;transition:border-color .2s}
+.conf-input::placeholder{color:rgba(255,255,255,.25)}
+.conf-input:focus{border-color:var(--gold)}
+.btn-book{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--dark);background:var(--gold);border:none;padding:17px 32px;cursor:none;transition:background .25s,opacity .25s;font-family:inherit;align-self:flex-start}
+.btn-book:hover{background:var(--gold-lt)}
+.btn-book:disabled{opacity:.4;cursor:not-allowed}
+.booking-success{display:none;text-align:center;padding:56px 0}
+.booking-success.visible{display:block}
+.success-icon{width:52px;height:52px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--gold);margin:0 auto 22px}
+.success-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;margin-bottom:10px}
+.success-desc{font-size:14px;color:rgba(255,255,255,.4);line-height:1.7}
+.booking-note{font-size:11px;letter-spacing:1.5px;color:rgba(255,255,255,.15);margin-top:28px;text-align:center}
 
-/* ── LASH SCENE SECTION ── */
-.lash-scene-section {
-  position: relative;
-  height: 85vh;
-  background: var(--dark);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-}
-#lash-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-.lash-scene-content {
-  position: relative;
-  z-index: 10;
-  padding: 0 100px;
-  max-width: 600px;
-}
-.lash-scene-content .section-label {
-  color: var(--gold);
-  opacity: 0;
-  transform: translateY(20px);
-}
-.lash-scene-content .section-heading {
-  color: var(--ivory);
-  opacity: 0;
-  transform: translateY(30px);
-}
-.lash-scene-content .section-heading em { color: var(--gold); }
-.lash-scene-desc {
-  font-size: 15px;
-  line-height: 1.8;
-  color: rgba(250,248,245,0.5);
-  margin-top: 20px;
-  max-width: 420px;
-  opacity: 0;
-  transform: translateY(20px);
-}
+/* ─── SERVICES ─── */
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.service-card{padding:40px 34px;background:var(--ivory2);position:relative;overflow:hidden;cursor:none;transition:box-shadow .3s}
+.service-card:hover{box-shadow:0 20px 60px rgba(196,162,106,.14)}
+.card-glow{position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(196,162,106,.13) 0%,transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
+.service-card:hover .card-glow{opacity:1}
+.service-icon{display:block;font-size:16px;color:var(--gold-lt);margin-bottom:18px}
+.service-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:400;margin-bottom:10px}
+.service-desc{font-size:13px;line-height:1.75;color:var(--mid);margin-bottom:18px}
+.service-price{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
 
-/* ── SECTION COMMON ── */
-.section {
-  padding: 120px 100px;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-.section-label {
-  font-size: 10px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 16px;
-  display: block;
-}
-.section-heading {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(36px, 4vw, 60px);
-  font-weight: 300;
-  line-height: 1.1;
-  letter-spacing: -0.5px;
-  margin-bottom: 64px;
-}
-.section-heading em { font-style: italic; color: var(--gold); }
+/* ─── PORTFOLIO ─── */
+.portfolio-wrap{padding:110px 0 80px}
+.portfolio-intro{padding:0 100px;margin-bottom:52px}
+.portfolio-track{display:flex;gap:20px;padding:0 100px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.portfolio-track::-webkit-scrollbar{display:none}
+.portfolio-item{flex-shrink:0;width:460px;height:560px;position:relative;overflow:hidden;scroll-snap-align:start;cursor:none}
+.portfolio-item img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.16,1,.3,1)}
+.portfolio-item:hover img{transform:scale(1.04)}
+.portfolio-item-overlay{position:absolute;bottom:0;left:0;right:0;padding:40px 26px 26px;background:linear-gradient(to top,rgba(28,26,23,.7),transparent);opacity:0;transition:opacity .3s}
+.portfolio-item:hover .portfolio-item-overlay{opacity:1}
+.portfolio-tag{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-lt)}
+.portfolio-item--cta{background:var(--blush);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:56px 44px}
+.portfolio-item--cta p{font-family:'Cormorant Garamond',Georgia,serif;font-size:30px;font-weight:300;line-height:1.2;margin-bottom:28px}
 
-.reveal {
-  opacity: 0;
-  transform: translateY(40px);
-}
+/* ─── ABOUT ─── */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.about-photo-wrap{position:relative}
+.about-photo{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:center top}
+.about-photo.anim-ready{animation:clipReveal 1.4s cubic-bezier(.16,1,.3,1) both}
+.about-photo-badge{position:absolute;bottom:-20px;right:-20px;background:var(--dark);padding:22px 26px;text-align:center}
+.badge-num{font-family:'Cormorant Garamond',Georgia,serif;font-size:46px;font-weight:300;color:var(--gold);line-height:1}
+.badge-num::after{content:'+'}
+.badge-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:6px}
+.about-text .section-heading{margin-bottom:0}
+.about-divider{width:40px;height:1px;background:var(--gold);margin:22px 0}
+.about-body{font-size:15px;line-height:1.85;color:var(--mid);margin-bottom:14px}
+.about-sig{font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;font-style:italic;color:var(--gold);margin-top:30px}
 
-/* ── BOOKING ── */
-.booking-wrap {
-  background: var(--dark);
-  padding: 120px 0;
-  color: #fff;
-}
-.booking-inner {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 0 40px;
-}
-.booking-label {
-  font-size: 10px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 16px;
-  display: block;
-}
-.booking-heading {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(32px, 4vw, 52px);
-  font-weight: 300;
-  margin-bottom: 12px;
-}
-.booking-heading em { font-style: italic; color: var(--gold); }
-.booking-sub {
-  font-size: 14px;
-  color: rgba(255,255,255,0.4);
-  margin-bottom: 48px;
-  line-height: 1.7;
-}
-.booking-steps {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin-bottom: 32px;
-}
-.step-row {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 18px 24px;
-  border: 1px solid rgba(255,255,255,0.06);
-  cursor: none;
-  transition: border-color 0.25s, background 0.25s;
-}
-.step-row.active {
-  border-color: rgba(196,162,106,0.3);
-  background: rgba(196,162,106,0.04);
-}
-.step-row.selected .step-num {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: #fff;
-}
-.step-num {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  flex-shrink: 0;
-  transition: background 0.25s, border-color 0.25s;
-}
-.step-content { flex: 1; }
-.step-title { font-size: 13px; font-weight: 400; letter-spacing: 0.5px; }
-.step-desc { font-size: 12px; color: rgba(255,255,255,0.35); margin-top: 2px; }
-.step-arrow { font-size: 18px; color: rgba(255,255,255,0.2); }
-.booking-panel { margin-bottom: 24px; }
-.booking-panel.hidden { display: none; }
-.service-picker {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.service-chip {
-  font-size: 12px;
-  letter-spacing: 1px;
-  color: rgba(255,255,255,0.6);
-  border: 1px solid rgba(255,255,255,0.12);
-  background: none;
-  padding: 10px 20px;
-  cursor: none;
-  transition: border-color 0.25s, color 0.25s, background 0.25s;
-}
-.service-chip:hover,
-.service-chip.chosen {
-  border-color: var(--gold);
-  color: var(--gold);
-  background: rgba(196,162,106,0.06);
-}
-.date-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin-bottom: 12px;
-}
-.date-btn {
-  background: none;
-  border: 1px solid rgba(255,255,255,0.1);
-  color: rgba(255,255,255,0.6);
-  padding: 12px 8px;
-  font-size: 12px;
-  cursor: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  transition: all 0.2s;
-}
-.date-btn .d-name { font-size: 10px; color: rgba(255,255,255,0.3); letter-spacing: 1px; }
-.date-btn:hover,
-.date-btn.picked { border-color: var(--gold); color: var(--gold-lt); }
-.time-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-.time-grid.hidden { display: none; }
-.time-btn {
-  background: none;
-  border: 1px solid rgba(255,255,255,0.1);
-  color: rgba(255,255,255,0.6);
-  padding: 12px;
-  font-size: 12px;
-  cursor: none;
-  transition: all 0.2s;
-}
-.time-btn:hover,
-.time-btn.picked { border-color: var(--gold); color: var(--gold-lt); }
-.confirm-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.conf-input {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: #fff;
-  padding: 14px 18px;
-  font-size: 13px;
-  font-family: inherit;
-  outline: none;
-  transition: border-color 0.2s;
-}
-.conf-input::placeholder { color: rgba(255,255,255,0.25); }
-.conf-input:focus { border-color: var(--gold); }
-.btn-book {
-  font-size: 11px;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: var(--dark);
-  background: var(--gold);
-  border: none;
-  padding: 18px 32px;
-  cursor: none;
-  transition: background 0.25s, opacity 0.25s;
-  align-self: flex-start;
-}
-.btn-book:hover { background: var(--gold-lt); }
-.btn-book:disabled { opacity: 0.4; }
-.booking-success { display: none; text-align: center; padding: 60px 0; }
-.booking-success.visible { display: block; }
-.success-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: 1px solid var(--gold);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  color: var(--gold);
-  margin: 0 auto 24px;
-}
-.success-title { font-size: 22px; font-family: 'Cormorant Garamond', serif; font-weight: 300; margin-bottom: 12px; }
-.success-desc { font-size: 14px; color: rgba(255,255,255,0.4); line-height: 1.7; }
-.booking-note {
-  font-size: 11px;
-  letter-spacing: 1.5px;
-  color: rgba(255,255,255,0.18);
-  margin-top: 28px;
-  text-align: center;
-}
+/* ─── FOOTER ─── */
+.footer{background:var(--dark);padding:80px 100px;text-align:center;position:relative;overflow:hidden}
+.footer::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:280px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent)}
+.footer-logo{font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;font-weight:300;letter-spacing:12px;color:var(--ivory);margin-bottom:8px}
+.footer-logo span{color:var(--gold)}
+.footer-tagline{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:40px}
+.footer-contact{display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:40px}
+.footer-contact a{font-size:13px;color:rgba(255,255,255,.5);text-decoration:none;cursor:none;transition:color .2s}
+.footer-contact a:hover{color:var(--gold)}
+.footer-line{width:1px;height:12px;background:rgba(255,255,255,.12)}
+.footer-copy{font-size:11px;letter-spacing:1px;color:rgba(255,255,255,.15)}
 
-/* ── SERVICES ── */
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
+/* ─── MOBILE ─── */
+@media(max-width:900px){
+  body{cursor:auto}
+  #cursor-dot,#cursor-ring{display:none}
+  .nav{padding:18px 24px}
+  .nav.scrolled{padding:12px 24px}
+  .nav-links{display:none}
+  .hero{grid-template-columns:1fr;min-height:100svh}
+  .hero-left{padding:110px 24px 60px;order:2}
+  .hero-right{height:52svh;order:1}
+  .hero-img{position:absolute}
+  .hero-line{display:none}
+  .lash-scene{height:65vh}
+  .lash-content{padding:0 24px}
+  .section{padding:80px 24px}
+  .services-grid{grid-template-columns:1fr}
+  .portfolio-intro{padding:0 24px}
+  .portfolio-track{padding:0 24px}
+  .portfolio-item{width:86vw;height:460px}
+  .about-grid{grid-template-columns:1fr;gap:56px}
+  .about-photo-badge{right:0;bottom:-12px}
+  .footer{padding:60px 24px}
+  .footer-contact{flex-direction:column;gap:14px}
+  .footer-line{display:none}
 }
-.service-card {
-  padding: 40px 36px;
-  background: var(--ivory2);
-  position: relative;
-  overflow: hidden;
-  cursor: none;
-  transform-style: preserve-3d;
-  transition: box-shadow 0.3s;
+@media(max-width:600px){
+  .date-grid{grid-template-columns:repeat(2,1fr)}
+  .booking-inner{padding:0 20px}
+  .lash-scene{height:55vh}
 }
-.service-card:hover { box-shadow: 0 20px 60px rgba(196,162,106,0.15); }
-.card-glow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(196,162,106,0.12) 0%, transparent 60%);
-  opacity: 0;
-  transition: opacity 0.3s;
-  pointer-events: none;
-}
-.service-card:hover .card-glow { opacity: 1; }
-.service-icon {
-  display: block;
-  font-size: 18px;
-  color: var(--gold-lt);
-  margin-bottom: 20px;
-}
-.service-name {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 22px;
-  font-weight: 400;
-  letter-spacing: 0.3px;
-  margin-bottom: 12px;
-}
-.service-desc {
-  font-size: 13px;
-  line-height: 1.75;
-  color: var(--mid);
-  margin-bottom: 20px;
-}
-.service-price {
-  font-size: 11px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-
-/* ── PORTFOLIO ── */
-.portfolio-wrap {
-  padding: 120px 0 80px;
-  overflow: hidden;
-}
-.portfolio-intro {
-  padding: 0 100px;
-  margin-bottom: 56px;
-}
-.portfolio-track-outer {
-  position: relative;
-  overflow: hidden;
-}
-.portfolio-track {
-  display: flex;
-  gap: 20px;
-  padding: 0 100px;
-  will-change: transform;
-}
-.portfolio-item {
-  flex-shrink: 0;
-  width: 480px;
-  height: 580px;
-  position: relative;
-  overflow: hidden;
-}
-.portfolio-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.8s var(--ease-out);
-}
-.portfolio-item:hover img { transform: scale(1.04); }
-.portfolio-item-overlay {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  padding: 40px 28px 28px;
-  background: linear-gradient(to top, rgba(28,26,23,0.7), transparent);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.portfolio-item:hover .portfolio-item-overlay { opacity: 1; }
-.portfolio-tag {
-  font-size: 11px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--gold-lt);
-}
-.portfolio-item--cta {
-  background: var(--blush);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 60px 48px;
-}
-.portfolio-item--cta p {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 32px;
-  font-weight: 300;
-  line-height: 1.2;
-  margin-bottom: 32px;
-}
-
-/* ── ABOUT ── */
-.about-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: center;
-}
-.about-photo-wrap {
-  position: relative;
-}
-.about-photo {
-  width: 100%;
-  aspect-ratio: 3/4;
-  object-fit: cover;
-  object-position: center top;
-  clip-path: inset(0 0 100% 0);
-}
-.about-photo-badge {
-  position: absolute;
-  bottom: -20px;
-  right: -20px;
-  background: var(--dark);
-  padding: 24px 28px;
-  text-align: center;
-}
-.badge-num {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 48px;
-  font-weight: 300;
-  color: var(--gold);
-  line-height: 1;
-}
-.badge-num::after { content: '+'; }
-.badge-text {
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.4);
-  margin-top: 6px;
-}
-.about-text .section-heading { margin-bottom: 0; }
-.about-divider {
-  width: 40px;
-  height: 1px;
-  background: var(--gold);
-  margin: 24px 0;
-}
-.about-body {
-  font-size: 15px;
-  line-height: 1.85;
-  color: var(--mid);
-  margin-bottom: 16px;
-}
-.about-sig {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 20px;
-  font-style: italic;
-  color: var(--gold);
-  margin-top: 32px;
-}
-
-/* ── FOOTER ── */
-.footer {
-  background: var(--dark);
-  padding: 80px 100px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-.footer-shimmer {
-  position: absolute;
-  top: 0; left: 50%;
-  transform: translateX(-50%);
-  width: 300px;
-  height: 1px;
-  background: linear-gradient(to right, transparent, var(--gold), transparent);
-}
-.footer-logo {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 28px;
-  font-weight: 300;
-  letter-spacing: 12px;
-  color: var(--ivory);
-  margin-bottom: 8px;
-}
-.footer-logo span { color: var(--gold); }
-.footer-tagline {
-  font-size: 11px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.25);
-  margin-bottom: 40px;
-}
-.footer-contact {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-  margin-bottom: 40px;
-}
-.footer-contact a {
-  font-size: 13px;
-  color: rgba(255,255,255,0.5);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.footer-contact a:hover { color: var(--gold); }
-.footer-line {
-  width: 1px;
-  height: 12px;
-  background: rgba(255,255,255,0.12);
-}
-.footer-copy {
-  font-size: 11px;
-  letter-spacing: 1px;
-  color: rgba(255,255,255,0.15);
-}
-
-/* ── MOBILE ── */
-@media (max-width: 900px) {
-  body { cursor: auto; }
-  #cursor-dot, #cursor-ring { display: none; }
-
-  .nav { padding: 20px 24px; }
-  .nav.scrolled { padding: 14px 24px; }
-  .nav-links { display: none; }
-
-  .hero {
-    grid-template-columns: 1fr;
-    min-height: 100svh;
-  }
-  .hero-left {
-    padding: 120px 24px 60px;
-    order: 2;
-  }
-  .hero-right {
-    height: 50svh;
-    order: 1;
-  }
-  .hero-img-frame { position: relative; height: 100%; }
-  .hero-line { display: none; }
-
-  .lash-scene-content { padding: 0 24px; }
-  .lash-scene-section { height: 70vh; }
-
-  .section { padding: 80px 24px; }
-  .services-grid { grid-template-columns: 1fr; }
-  .portfolio-intro { padding: 0 24px; }
-  .portfolio-track { padding: 0 24px; overflow-x: auto; scroll-snap-type: x mandatory; }
-  .portfolio-item { scroll-snap-align: start; width: 85vw; height: 480px; }
-
-  .about-grid { grid-template-columns: 1fr; gap: 60px; }
-  .about-photo-badge { right: 0; bottom: -10px; }
-
-  .footer { padding: 60px 24px; }
-  .footer-contact { flex-direction: column; gap: 16px; }
-  .footer-line { display: none; }
-}
-
-@media (max-width: 600px) {
-  .date-grid { grid-template-columns: repeat(2, 1fr); }
-  .booking-inner { padding: 0 20px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; }
+@media(prefers-reduced-motion:reduce){
+  .hero-eyebrow,.hero-title,.hero-char,.hero-sub,.hero-actions,.scroll-hint,.hero-line,.hero-img{animation:none!important}
+  .reveal.hidden{opacity:1!important;transform:none!important}
+  .about-photo.anim-ready{animation:none!important}
 }
 </style>
 </head>
 <body>
 
-<!-- CUSTOM CURSOR -->
 <div id="cursor-dot"></div>
 <div id="cursor-ring"></div>
 
 <!-- NAV -->
 <nav class="nav" id="nav">
-  <a href="#" class="nav-logo">ON<span>A</span> BEAUTY</a>
+  <a href="#home" class="nav-logo">ON<span>A</span> BEAUTY</a>
   <div class="nav-links">
     <a href="#services">Behandlige</a>
     <a href="#portfolio">Ergebnisse</a>
@@ -868,8 +253,8 @@ body.no-custom-cursor { cursor: auto; }
     <h1 class="hero-title" id="hero-title">Dis Blick.<br><em>Dini</em><br>Schönheit.</h1>
     <p class="hero-sub">Professionelli Beauty-Behandlige für Fraue, wo das Besti verdient – mit Herz und Handwerk.</p>
     <div class="hero-actions">
-      <button class="btn-primary magnetic" onclick="scrollTo('booking')"><span>Jetzt buche</span></button>
-      <button class="btn-ghost magnetic" onclick="scrollTo('services')">Unsi Behandlige</button>
+      <button class="btn-primary magnetic" onclick="goTo('booking')"><span>Jetzt buche</span></button>
+      <button class="btn-ghost" onclick="goTo('services')">Unsi Behandlige</button>
     </div>
     <div class="scroll-hint">
       <span class="scroll-line"></span>
@@ -877,20 +262,18 @@ body.no-custom-cursor { cursor: auto; }
     </div>
   </div>
   <div class="hero-right">
-    <div class="hero-img-frame">
-      <img src="uploads/olivera.jpg" alt="Olivera – Ona Beauty" class="hero-img" id="hero-img">
-      <div class="hero-img-overlay"></div>
-    </div>
+    <img src="uploads/olivera.jpg" alt="Olivera – Ona Beauty" class="hero-img">
+    <div class="hero-img-overlay"></div>
   </div>
 </section>
 
 <!-- THREE.JS LASH SCENE -->
-<section class="lash-scene-section" id="lash-scene">
+<section class="lash-scene" id="lash-scene">
   <canvas id="lash-canvas"></canvas>
-  <div class="lash-scene-content">
-    <p class="section-label lash-label">Handwerk &amp; Präzision</p>
-    <h2 class="section-heading lash-heading">Jedi Wimper.<br><em>Perfekt</em> gsetzt.</h2>
-    <p class="lash-scene-desc">Jedi Wimper wird mit chirurgischer Präzision gsetzt – für e Look, wo stundig haltet und natürlich wirkt.</p>
+  <div class="lash-content">
+    <p class="section-label reveal">Handwerk &amp; Präzision</p>
+    <h2 class="section-heading reveal">Jedi Wimper.<br><em>Perfekt</em> gsetzt.</h2>
+    <p class="lash-desc reveal">Jedi Wimper wird mit chirurgischer Präzision gsetzt – für e Look, wo stundig haltet und natürlich wirkt.</p>
   </div>
 </section>
 
@@ -898,67 +281,62 @@ body.no-custom-cursor { cursor: auto; }
 <section class="booking-wrap" id="booking">
   <div class="booking-inner">
     <p class="booking-label">Termin buche</p>
-    <h2 class="booking-heading">In 3 Schritt<em>e</em> zum Termin</h2>
+    <h2 class="booking-heading" id="booking-heading">In 3 Schritt<em>e</em> zum Termin</h2>
     <p class="booking-sub" id="booking-sub">Schnell, einfach und direkt – ohne Umwäg.</p>
 
-    <div class="booking-steps" id="booking-steps">
-      <div class="step-row active" data-step="1" id="step-row-1">
-        <div class="step-num">1</div>
-        <div class="step-content">
-          <div class="step-title">Behandlig wähle</div>
-          <div class="step-desc" id="step1-desc">Welchi Behandlig darf's si?</div>
+    <div id="booking-form-wrap">
+      <div class="booking-steps">
+        <div class="step-row active" id="step-row-1" onclick="goStep(1)">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">Behandlig wähle</div>
+            <div class="step-desc" id="step1-desc">Welchi Behandlig darf's si?</div>
+          </div>
+          <span class="step-arrow">›</span>
         </div>
-        <span class="step-arrow">›</span>
-      </div>
-      <div class="step-row" data-step="2" id="step-row-2">
-        <div class="step-num">2</div>
-        <div class="step-content">
-          <div class="step-title">Datum &amp; Uhrzeit</div>
-          <div class="step-desc" id="step2-desc">Wann passt's dir?</div>
+        <div class="step-row" id="step-row-2" onclick="goStep(2)">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">Datum &amp; Uhrzeit</div>
+            <div class="step-desc" id="step2-desc">Wann passt's dir?</div>
+          </div>
+          <span class="step-arrow">›</span>
         </div>
-        <span class="step-arrow">›</span>
-      </div>
-      <div class="step-row" data-step="3" id="step-row-3">
-        <div class="step-num">3</div>
-        <div class="step-content">
-          <div class="step-title">Bestätige</div>
-          <div class="step-desc">Dini Kontaktdate</div>
+        <div class="step-row" id="step-row-3" onclick="goStep(3)">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">Bestätige</div>
+            <div class="step-desc">Dini Kontaktdate</div>
+          </div>
+          <span class="step-arrow">›</span>
         </div>
-        <span class="step-arrow">›</span>
       </div>
-    </div>
 
-    <div class="booking-panel" id="panel-1">
-      <div class="service-picker">
-        <button class="service-chip" data-service="Wimpern-Extensions">Wimpern-Extensions</button>
-        <button class="service-chip" data-service="Microblading">Microblading</button>
-        <button class="service-chip" data-service="Wimpernlifting">Wimpernlifting</button>
-        <button class="service-chip" data-service="Brow Styling">Brow Styling</button>
-        <button class="service-chip" data-service="Laser Epilasyon">Laser Epilasyon</button>
-        <button class="service-chip" data-service="Brauen Henna">Brauen Henna</button>
+      <div class="booking-panel" id="panel-1">
+        <div class="service-picker" id="service-picker"></div>
       </div>
-    </div>
 
-    <div class="booking-panel hidden" id="panel-2">
-      <div class="date-grid" id="date-grid"></div>
-      <div class="time-grid hidden" id="time-grid"></div>
-    </div>
-
-    <div class="booking-panel hidden" id="panel-3">
-      <div class="confirm-form">
-        <input class="conf-input" id="input-name" placeholder="Dine Name" type="text">
-        <input class="conf-input" id="input-phone" placeholder="Handynummer (WhatsApp)" type="tel">
-        <button class="btn-book magnetic" id="btn-submit">Termin bestätige</button>
+      <div class="booking-panel hidden" id="panel-2">
+        <div class="date-grid" id="date-grid"></div>
+        <div class="time-grid hidden" id="time-grid"></div>
       </div>
+
+      <div class="booking-panel hidden" id="panel-3">
+        <div class="confirm-form">
+          <input class="conf-input" id="inp-name" placeholder="Dine Name" type="text">
+          <input class="conf-input" id="inp-phone" placeholder="Handynummer (WhatsApp)" type="tel">
+          <button class="btn-book" id="btn-submit" disabled onclick="submitBooking()">Termin bestätige</button>
+        </div>
+      </div>
+
+      <p class="booking-note">Koschtelos · Ohni Aameldig · 100% koschtelos stornierbar</p>
     </div>
 
     <div class="booking-success" id="booking-success">
       <div class="success-icon">✓</div>
       <p class="success-title">Termin bestätigt</p>
-      <p class="success-desc" id="success-desc">Mir freue uns uf dich!<br>Olivera meldet sich bald per WhatsApp.</p>
+      <p class="success-desc" id="success-desc"></p>
     </div>
-
-    <p class="booking-note">Koschtelos · Ohni Aameldig · 100% koschtelos stornierbar</p>
   </div>
 </section>
 
@@ -1018,20 +396,18 @@ body.no-custom-cursor { cursor: auto; }
     <p class="section-label reveal">Ergebnisse</p>
     <h2 class="section-heading reveal">Echti<br><em>Verwandlige</em></h2>
   </div>
-  <div class="portfolio-track-outer" id="portfolio-outer">
-    <div class="portfolio-track" id="portfolio-track">
-      <div class="portfolio-item">
-        <img src="uploads/rad1.jpg" alt="Wimpern Extensions & Microblading">
-        <div class="portfolio-item-overlay"><span class="portfolio-tag">Wimpere &amp; Microblading</span></div>
-      </div>
-      <div class="portfolio-item">
-        <img src="uploads/rad2.jpg" alt="Brow PMU – Vorher/Nachher">
-        <div class="portfolio-item-overlay"><span class="portfolio-tag">Brow PMU · Vorher / Nachher</span></div>
-      </div>
-      <div class="portfolio-item portfolio-item--cta">
-        <p>Mehr<br>uf Instagram</p>
-        <a href="#" class="btn-primary magnetic"><span>→ Instagram</span></a>
-      </div>
+  <div class="portfolio-track" id="portfolio-track">
+    <div class="portfolio-item">
+      <img src="uploads/rad1.jpg" alt="Wimpern Extensions & Microblading">
+      <div class="portfolio-item-overlay"><span class="portfolio-tag">Wimpere &amp; Microblading</span></div>
+    </div>
+    <div class="portfolio-item">
+      <img src="uploads/rad2.jpg" alt="Brow PMU – Vorher/Nachher">
+      <div class="portfolio-item-overlay"><span class="portfolio-tag">Brow PMU · Vorher / Nachher</span></div>
+    </div>
+    <div class="portfolio-item portfolio-item--cta">
+      <p>Mehr uf<br>Instagram</p>
+      <a href="#" class="btn-primary magnetic"><span>→ Instagram</span></a>
     </div>
   </div>
 </div>
@@ -1042,8 +418,8 @@ body.no-custom-cursor { cursor: auto; }
     <div class="about-photo-wrap reveal">
       <img src="uploads/olivera.jpg" alt="Olivera – Inhaberin Ona Beauty" class="about-photo" id="about-photo">
       <div class="about-photo-badge">
-        <div class="badge-num" id="badge-count">0</div>
-        <div class="badge-text">Joor Erfahrig</div>
+        <div class="badge-num" id="badge-count">8</div>
+        <div class="badge-label">Joor Erfahrig</div>
       </div>
     </div>
     <div class="about-text reveal">
@@ -1052,7 +428,7 @@ body.no-custom-cursor { cursor: auto; }
       <div class="about-divider"></div>
       <p class="about-body">Schönheit isch für mi nöd eifach e Job – es isch mini Passion. Sit über acht Joor mache ich Fraue in dr Schwiiz mit hochwertige Behandlige glücklich.</p>
       <p class="about-body">Jede Kundin isch einzigartig. Drum nimm ich mir d'Zyt, s'Richtige für dich z'finde – sorgfältig, herzlich und mit em Blick fürs Detail.</p>
-      <button class="btn-primary magnetic" onclick="scrollTo('booking')" style="margin-top:8px"><span>Jetzt Termin buche</span></button>
+      <button class="btn-primary magnetic" onclick="goTo('booking')" style="margin-top:8px"><span>Jetzt Termin buche</span></button>
       <p class="about-sig">— Olivera</p>
     </div>
   </div>
@@ -1060,7 +436,6 @@ body.no-custom-cursor { cursor: auto; }
 
 <!-- FOOTER -->
 <footer class="footer">
-  <div class="footer-shimmer"></div>
   <p class="footer-logo">ON<span>A</span> BEAUTY</p>
   <p class="footer-tagline">Beautysalon · Zürich</p>
   <div class="footer-contact">
@@ -1074,518 +449,395 @@ body.no-custom-cursor { cursor: auto; }
 </footer>
 
 <script>
-/* ── HELPERS ── */
-function scrollTo(id) {
-  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-}
+/* ── NAV ── */
+var nav = document.getElementById('nav');
+window.addEventListener('scroll', function(){ nav.classList.toggle('scrolled', window.scrollY > 40); }, {passive:true});
 
-const isMobile = window.innerWidth < 900;
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* ── SCROLL HELPER ── */
+function goTo(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
 
-/* ── LENIS SMOOTH SCROLL ── */
-let lenis;
-if (!prefersReducedMotion) {
-  lenis = new Lenis({ duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
-  function rafLenis(time) {
-    lenis.raf(time);
-    requestAnimationFrame(rafLenis);
-  }
-  requestAnimationFrame(rafLenis);
-}
-
-/* ── CUSTOM CURSOR ── */
-if (!isMobile && !prefersReducedMotion) {
-  const dot  = document.getElementById('cursor-dot');
-  const ring = document.getElementById('cursor-ring');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-
-  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-
-  (function animCursor() {
-    requestAnimationFrame(animCursor);
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) * 0.12;
-    dot.style.transform  = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
-    ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+/* ── CURSOR ── */
+(function(){
+  if(window.innerWidth < 900) return;
+  var dot = document.getElementById('cursor-dot');
+  var ring = document.getElementById('cursor-ring');
+  var mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;});
+  (function loop(){
+    requestAnimationFrame(loop);
+    rx+=(mx-rx)*.11; ry+=(my-ry)*.11;
+    dot.style.left=mx+'px'; dot.style.top=my+'px';
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
   })();
-
-  document.querySelectorAll('a, button, .service-card, .portfolio-item, .step-row').forEach(el => {
-    el.addEventListener('mouseenter', () => ring.classList.add('hovered'));
-    el.addEventListener('mouseleave', () => ring.classList.remove('hovered'));
+  document.querySelectorAll('a,button,.service-card,.portfolio-item,.step-row').forEach(function(el){
+    el.addEventListener('mouseenter',function(){ring.classList.add('hov');});
+    el.addEventListener('mouseleave',function(){ring.classList.remove('hov');});
   });
-
-  /* glitter trail */
-  let lastGlitter = 0;
-  document.addEventListener('mousemove', e => {
-    if (prefersReducedMotion) return;
-    const now = Date.now();
-    if (now - lastGlitter < 60) return;
-    lastGlitter = now;
-    const g = document.createElement('div');
-    g.className = 'glitter';
-    g.style.left = e.clientX + 'px';
-    g.style.top  = e.clientY + 'px';
-    g.style.width  = (3 + Math.random() * 4) + 'px';
-    g.style.height = g.style.width;
-    g.style.opacity = '0.9';
+  /* glitter */
+  var last=0;
+  document.addEventListener('mousemove',function(e){
+    var now=Date.now(); if(now-last<55) return; last=now;
+    var g=document.createElement('div');
+    g.className='glitter';
+    var s=(3+Math.random()*4)+'px';
+    g.style.cssText='width:'+s+';height:'+s+';left:'+e.clientX+'px;top:'+e.clientY+'px;';
     document.body.appendChild(g);
-    gsap.to(g, {
-      x: (Math.random() - 0.5) * 30,
-      y: (Math.random() - 0.5) * 30 - 20,
-      opacity: 0,
-      scale: 0,
-      duration: 0.7 + Math.random() * 0.4,
-      ease: 'power2.out',
-      onComplete: () => g.remove()
-    });
-  });
-}
-
-/* ── NAV SCROLL ── */
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 40);
-}, { passive: true });
-
-/* ── HERO IMAGE LOAD ── */
-const heroImg = document.getElementById('hero-img');
-function onHeroImgLoad() {
-  gsap.to(heroImg, { opacity: 1, scale: 1, duration: 1.4, ease: 'power2.out' });
-}
-if (heroImg.complete) { onHeroImgLoad(); }
-else { heroImg.addEventListener('load', onHeroImgLoad); }
-
-/* ── HERO ENTRANCE ANIMATION ── */
-function splitAndAnimate() {
-  const titleEl = document.getElementById('hero-title');
-  const html = titleEl.innerHTML;
-  // Wrap each non-tag character in a span
-  const result = html.replace(/(<[^>]+>)|([^<])/g, (match, tag, char) => {
-    if (tag) return tag;
-    if (char === ' ') return '<span style="display:inline-block;width:0.28em"></span>';
-    return `<span class="hero-char">${char}</span>`;
-  });
-  titleEl.innerHTML = result;
-
-  const tl = gsap.timeline({ delay: 0.3 });
-  tl.to('.hero-eyebrow', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' })
-    .to('.hero-char', {
-      opacity: 1, y: 0, duration: 0.06,
-      stagger: 0.04, ease: 'power2.out'
-    }, '-=0.5')
-    .to('.hero-sub', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.3')
-    .to('.hero-actions', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.5')
-    .to('.hero-line', { scaleY: 1, duration: 1.4, ease: 'power2.inOut' }, '-=1.0')
-    .to('.scroll-hint', { opacity: 1, duration: 0.6 }, '-=0.4');
-}
-if (!prefersReducedMotion) splitAndAnimate();
-else {
-  document.querySelectorAll('.hero-eyebrow,.hero-sub,.hero-actions,.scroll-hint')
-    .forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; });
-}
-
-/* ── GSAP SCROLL REVEALS ── */
-gsap.registerPlugin(ScrollTrigger);
-
-document.querySelectorAll('.reveal').forEach((el, i) => {
-  gsap.to(el, {
-    scrollTrigger: { trigger: el, start: 'top 88%', once: true },
-    opacity: 1, y: 0,
-    duration: prefersReducedMotion ? 0 : 0.9,
-    delay: prefersReducedMotion ? 0 : (i % 4) * 0.08,
-    ease: 'power3.out'
-  });
-});
-
-/* lash scene text reveal */
-gsap.to('.lash-label', {
-  scrollTrigger: { trigger: '.lash-scene-section', start: 'top 70%', once: true },
-  opacity: 1, y: 0, duration: 0.8, ease: 'power3.out'
-});
-gsap.to('.lash-heading', {
-  scrollTrigger: { trigger: '.lash-scene-section', start: 'top 70%', once: true },
-  opacity: 1, y: 0, duration: 1, delay: 0.15, ease: 'power3.out'
-});
-gsap.to('.lash-scene-desc', {
-  scrollTrigger: { trigger: '.lash-scene-section', start: 'top 70%', once: true },
-  opacity: 1, y: 0, duration: 0.8, delay: 0.3, ease: 'power3.out'
-});
-
-/* about photo clip-path reveal */
-ScrollTrigger.create({
-  trigger: '#about-photo',
-  start: 'top 80%',
-  once: true,
-  onEnter: () => {
-    gsap.to('#about-photo', {
-      clipPath: 'inset(0 0 0% 0)',
-      duration: prefersReducedMotion ? 0 : 1.4,
-      ease: 'power3.inOut'
-    });
-  }
-});
-
-/* counter animation */
-ScrollTrigger.create({
-  trigger: '#badge-count',
-  start: 'top 85%',
-  once: true,
-  onEnter: () => {
-    const el = document.getElementById('badge-count');
-    gsap.to({ v: 0 }, {
-      v: 8,
-      duration: prefersReducedMotion ? 0 : 1.5,
-      ease: 'power2.out',
-      onUpdate: function() { el.textContent = Math.round(this.targets()[0].v); },
-      onComplete: () => { el.textContent = '8'; }
-    });
-  }
-});
-
-/* ── PORTFOLIO HORIZONTAL SCROLL ── */
-if (!isMobile && !prefersReducedMotion) {
-  const track = document.getElementById('portfolio-track');
-  const outer = document.getElementById('portfolio-outer');
-  const getScrollAmt = () => track.scrollWidth - outer.offsetWidth;
-
-  ScrollTrigger.create({
-    trigger: outer,
-    start: 'top top',
-    end: () => `+=${getScrollAmt()}`,
-    scrub: 1.2,
-    pin: true,
-    anticipatePin: 1,
-    onUpdate: self => {
-      gsap.set(track, { x: -getScrollAmt() * self.progress });
-    }
-  });
-}
-
-/* ── SERVICE CARD 3D TILT ── */
-if (!isMobile && !prefersReducedMotion) {
-  document.querySelectorAll('.service-card').forEach(card => {
-    card.addEventListener('mousemove', e => {
-      const r = card.getBoundingClientRect();
-      const x = e.clientX - r.left;
-      const y = e.clientY - r.top;
-      const cx = r.width / 2;
-      const cy = r.height / 2;
-      const rotX = ((y - cy) / cy) * -10;
-      const rotY = ((x - cx) / cx) * 10;
-      card.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(1.02,1.02,1.02)`;
-      card.style.transition = 'transform 0.1s';
-      // card glow follows mouse
-      const glow = card.querySelector('.card-glow');
-      const px = (x / r.width) * 100;
-      const py = (y / r.height) * 100;
-      card.style.setProperty('--mx', px + '%');
-      card.style.setProperty('--my', py + '%');
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) scale3d(1,1,1)';
-      card.style.transition = 'transform 0.6s cubic-bezier(0.16,1,0.3,1)';
-    });
-  });
-}
-
-/* ── MAGNETIC BUTTONS ── */
-if (!isMobile && !prefersReducedMotion) {
-  document.querySelectorAll('.magnetic').forEach(btn => {
-    btn.addEventListener('mousemove', e => {
-      const r = btn.getBoundingClientRect();
-      const x = e.clientX - r.left - r.width / 2;
-      const y = e.clientY - r.top - r.height / 2;
-      gsap.to(btn, { x: x * 0.3, y: y * 0.3, duration: 0.4, ease: 'power2.out' });
-    });
-    btn.addEventListener('mouseleave', () => {
-      gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1,0.5)' });
-    });
-  });
-}
-
-/* ── THREE.JS LASH SCENE ── */
-(function initLashScene() {
-  if (!window.THREE) return;
-  const canvas  = document.getElementById('lash-canvas');
-  const section = document.getElementById('lash-scene');
-  const W = section.offsetWidth;
-  const H = section.offsetHeight;
-
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !isMobile });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(W, H);
-
-  const scene  = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(50, W / H, 0.1, 100);
-  camera.position.z = 6;
-
-  /* lighting */
-  scene.add(new THREE.AmbientLight(0xfaf8f5, 0.6));
-
-  const light1 = new THREE.PointLight(0xc4a26a, 4, 20);
-  light1.position.set(3, 3, 3);
-  scene.add(light1);
-
-  const light2 = new THREE.PointLight(0xd9be93, 2, 18);
-  light2.position.set(-4, -2, 2);
-  scene.add(light2);
-
-  const light3 = new THREE.SpotLight(0xfaf8f5, 1.5, 20, Math.PI / 5);
-  light3.position.set(0, 8, 4);
-  scene.add(light3);
-
-  /* lash group */
-  const lashGroup = new THREE.Group();
-  const lashCount = isMobile ? 6 : 14;
-  const lashes = [];
-
-  function createLash(ox, oy, oz, scale, rz) {
-    const pts = [
-      new THREE.Vector3(0, 0, 0),
-      new THREE.Vector3(0.06 * scale, 0.35 * scale,  0.08),
-      new THREE.Vector3(0.13 * scale, 0.75 * scale,  0.18),
-      new THREE.Vector3(0.16 * scale, 1.15 * scale,  0.12),
-      new THREE.Vector3(0.11 * scale, 1.55 * scale,  0.04),
-      new THREE.Vector3(0.02 * scale, 1.85 * scale, -0.04)
-    ];
-    const curve = new THREE.CatmullRomCurve3(pts);
-    const geo   = new THREE.TubeGeometry(curve, 24, 0.022 * scale, 8, false);
-    const mat   = new THREE.MeshStandardMaterial({
-      color: 0x1c1a17,
-      metalness: 0.5,
-      roughness: 0.4,
-      envMapIntensity: 1
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    mesh.position.set(ox, oy, oz);
-    mesh.rotation.z = rz;
-    mesh.userData.spd    = 0.35 + Math.random() * 0.45;
-    mesh.userData.amp    = 0.04 + Math.random() * 0.08;
-    mesh.userData.phase  = Math.random() * Math.PI * 2;
-    mesh.userData.rspd   = 0.1  + Math.random() * 0.2;
-    return mesh;
-  }
-
-  for (let i = 0; i < lashCount; i++) {
-    const lash = createLash(
-      (Math.random() - 0.5) * 7,
-      (Math.random() - 0.5) * 4,
-      (Math.random() - 0.5) * 2.5,
-      0.55 + Math.random() * 0.9,
-      (Math.random() - 0.5) * 0.7
-    );
-    lashes.push(lash);
-    lashGroup.add(lash);
-  }
-  scene.add(lashGroup);
-
-  /* gold sparkle particles */
-  const pCount = isMobile ? 35 : 90;
-  const pPos   = new Float32Array(pCount * 3);
-  const pCol   = new Float32Array(pCount * 3);
-  for (let i = 0; i < pCount; i++) {
-    pPos[i*3]   = (Math.random() - 0.5) * 9;
-    pPos[i*3+1] = (Math.random() - 0.5) * 7;
-    pPos[i*3+2] = (Math.random() - 0.5) * 4;
-    pCol[i*3]   = 0.72 + Math.random() * 0.25;
-    pCol[i*3+1] = 0.58 + Math.random() * 0.15;
-    pCol[i*3+2] = 0.30 + Math.random() * 0.20;
-  }
-  const pgeo = new THREE.BufferGeometry();
-  pgeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-  pgeo.setAttribute('color',    new THREE.BufferAttribute(pCol, 3));
-  const pmat = new THREE.PointsMaterial({
-    size: isMobile ? 0.05 : 0.04,
-    vertexColors: true,
-    transparent: true,
-    opacity: 0.85,
-    sizeAttenuation: true
-  });
-  const particles = new THREE.Points(pgeo, pmat);
-  scene.add(particles);
-
-  /* mouse parallax */
-  const mouse = { x: 0, y: 0 };
-  document.addEventListener('mousemove', e => {
-    mouse.x = (e.clientX / window.innerWidth)  * 2 - 1;
-    mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-  });
-
-  /* scroll-based entry animation */
-  let sceneVisible = false;
-  const obs = new IntersectionObserver(entries => {
-    sceneVisible = entries[0].isIntersecting;
-  }, { threshold: 0.1 });
-  obs.observe(section);
-
-  ScrollTrigger.create({
-    trigger: section,
-    start: 'top 80%',
-    once: true,
-    onEnter: () => {
-      gsap.fromTo(lashGroup.scale,
-        { x: 0.4, y: 0.4, z: 0.4 },
-        { x: 1, y: 1, z: 1, duration: prefersReducedMotion ? 0 : 1.8, ease: 'elastic.out(1, 0.5)' }
-      );
-      gsap.from(pmat, { opacity: 0, duration: prefersReducedMotion ? 0 : 1.5, ease: 'power2.out' });
-    }
-  });
-
-  /* animate */
-  const clock = new THREE.Clock();
-  function animate() {
-    requestAnimationFrame(animate);
-    if (!sceneVisible && !prefersReducedMotion) { renderer.render(scene, camera); return; }
-    const t = clock.getElapsedTime();
-
-    lashes.forEach(l => {
-      l.position.y  += Math.sin(t * l.userData.spd  + l.userData.phase) * 0.0006;
-      l.rotation.z   += Math.sin(t * l.userData.rspd + l.userData.phase) * 0.0002;
-      l.position.x  += Math.cos(t * l.userData.spd  * 0.7 + l.userData.phase) * 0.0003;
-    });
-
-    lashGroup.rotation.y = mouse.x * 0.25 + Math.sin(t * 0.18) * 0.08;
-    lashGroup.rotation.x = mouse.y * 0.12 + Math.sin(t * 0.14) * 0.04;
-
-    light1.position.x = Math.sin(t * 0.5) * 4;
-    light1.position.y = Math.cos(t * 0.4) * 3;
-    light1.intensity  = 3.5 + Math.sin(t * 1.2) * 0.5;
-
-    particles.rotation.y = t * 0.04;
-    particles.rotation.z = t * 0.02;
-    pmat.opacity = 0.6 + Math.sin(t * 0.8) * 0.2;
-
-    renderer.render(scene, camera);
-  }
-  animate();
-
-  /* resize */
-  window.addEventListener('resize', () => {
-    const w = section.offsetWidth;
-    const h = section.offsetHeight;
-    renderer.setSize(w, h);
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
+    if(window.gsap){
+      gsap.to(g,{x:(Math.random()-.5)*28,y:(Math.random()-.5)*28-16,opacity:0,scale:0,duration:.65+Math.random()*.3,ease:'power2.out',onComplete:function(){g.remove();}});
+    } else { setTimeout(function(){g.remove();},700); }
   });
 })();
 
-/* ── BOOKING FORM ── */
-(function initBooking() {
-  const DATES = [
-    { name:'Mo', date:'5. Mai' }, { name:'Di', date:'6. Mai' },
-    { name:'Mi', date:'7. Mai' }, { name:'Do', date:'8. Mai' },
-    { name:'Fr', date:'9. Mai' }, { name:'Sa', date:'10. Mai' },
-    { name:'Mo', date:'12. Mai' }, { name:'Di', date:'13. Mai' }
-  ];
-  const TIMES = ['09:00','10:30','12:00','13:30','15:00','16:30'];
-
-  /* populate date grid */
-  const dateGrid = document.getElementById('date-grid');
-  DATES.forEach((d, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'date-btn';
-    btn.dataset.idx = i;
-    btn.innerHTML = `<span class="d-name">${d.name}</span>${d.date}`;
-    btn.addEventListener('click', () => selectDate(i));
-    dateGrid.appendChild(btn);
+/* ── HERO CHAR SPLIT ── */
+(function(){
+  var title = document.getElementById('hero-title');
+  if(!title) return;
+  var html = title.innerHTML;
+  var charIdx = 0;
+  var baseDelay = 0.65; /* starts after eyebrow animation */
+  var out = html.replace(/(<[^>]+>)|(&[^;]+;)|([ ])|([\s\S])/g, function(m, tag, entity, space, ch){
+    if(tag) return tag;
+    if(entity) return entity;
+    if(space) return '<span style="display:inline-block;width:.28em"></span>';
+    var d = (baseDelay + charIdx * 0.038).toFixed(3);
+    charIdx++;
+    return '<span class="hero-char" style="--d:'+d+'s">'+ch+'</span>';
   });
+  title.innerHTML = out;
+})();
 
-  /* populate time grid */
-  const timeGrid = document.getElementById('time-grid');
-  TIMES.forEach(t => {
-    const btn = document.createElement('button');
-    btn.className = 'time-btn';
-    btn.textContent = t;
-    btn.addEventListener('click', () => selectTime(t));
-    timeGrid.appendChild(btn);
-  });
-
-  let selService = null, selDate = null, selTime = null;
-  let curStep = 1;
-
-  function showPanel(n) {
-    [1,2,3].forEach(i => {
-      document.getElementById(`panel-${i}`).classList.toggle('hidden', i !== n);
-      document.getElementById(`step-row-${i}`).classList.toggle('active', i === n);
-    });
-    curStep = n;
+/* ── SCROLL REVEAL via IntersectionObserver ── */
+(function(){
+  var els = document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)){
+    els.forEach(function(el){ el.classList.remove('hidden'); });
+    return;
   }
-
-  function markStep(n) {
-    document.getElementById(`step-row-${n}`).classList.add('selected');
-  }
-
-  /* step row click */
-  document.querySelectorAll('.step-row').forEach(row => {
-    row.addEventListener('click', () => {
-      const s = parseInt(row.dataset.step);
-      if (s === 1 || (s === 2 && selService) || (s === 3 && selService && selDate !== null && selTime)) {
-        showPanel(s);
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.remove('hidden');
+        obs.unobserve(e.target);
       }
     });
+  },{threshold:0.12});
+  /* stagger service cards */
+  var cardIdx=0;
+  els.forEach(function(el){
+    el.classList.add('hidden');
+    if(el.classList.contains('service-card')){
+      el.style.transitionDelay=(cardIdx*0.08)+'s';
+      cardIdx++;
+    }
+    obs.observe(el);
   });
+})();
 
-  /* service chip */
-  document.querySelectorAll('.service-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      document.querySelectorAll('.service-chip').forEach(c => c.classList.remove('chosen'));
-      chip.classList.add('chosen');
-      selService = chip.dataset.service;
-      document.getElementById('step1-desc').textContent = selService;
-      markStep(1);
-      showPanel(2);
+/* ── ABOUT PHOTO CLIP REVEAL ── */
+(function(){
+  var photo = document.getElementById('about-photo');
+  if(!photo) return;
+  var obs = new IntersectionObserver(function(entries){
+    if(entries[0].isIntersecting){
+      photo.classList.add('anim-ready');
+      obs.disconnect();
+    }
+  },{threshold:0.2});
+  obs.observe(photo);
+})();
+
+/* ── BADGE COUNTER ── */
+(function(){
+  var badge = document.getElementById('badge-count');
+  if(!badge) return;
+  var obs = new IntersectionObserver(function(entries){
+    if(entries[0].isIntersecting){
+      var start=0, end=8, dur=1400, t0=null;
+      function step(ts){
+        if(!t0) t0=ts;
+        var p=Math.min((ts-t0)/dur,1);
+        badge.textContent = Math.round(p*end);
+        if(p<1) requestAnimationFrame(step);
+        else badge.textContent=end;
+      }
+      requestAnimationFrame(step);
+      obs.disconnect();
+    }
+  },{threshold:0.5});
+  obs.observe(badge);
+})();
+
+/* ── SERVICE CARD 3D TILT ── */
+(function(){
+  if(window.innerWidth < 900) return;
+  document.querySelectorAll('.service-card').forEach(function(card){
+    card.addEventListener('mousemove',function(e){
+      var r=card.getBoundingClientRect();
+      var x=e.clientX-r.left, y=e.clientY-r.top;
+      var rx=((y-r.height/2)/r.height)*-10;
+      var ry=((x-r.width/2)/r.width)*10;
+      card.style.transform='perspective(800px) rotateX('+rx+'deg) rotateY('+ry+'deg) scale3d(1.025,1.025,1.025)';
+      card.style.transition='transform .08s';
+      card.style.setProperty('--mx',(x/r.width*100)+'%');
+      card.style.setProperty('--my',(y/r.height*100)+'%');
+    });
+    card.addEventListener('mouseleave',function(){
+      card.style.transform='perspective(800px) rotateX(0) rotateY(0) scale3d(1,1,1)';
+      card.style.transition='transform .55s cubic-bezier(.16,1,.3,1)';
     });
   });
+})();
 
-  function selectDate(i) {
-    document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('picked'));
-    dateGrid.querySelectorAll('.date-btn')[i].classList.add('picked');
-    selDate = i;
-    document.getElementById('time-grid').classList.remove('hidden');
-    updateStep2Desc();
-  }
+/* ── MAGNETIC BUTTONS ── */
+(function(){
+  if(window.innerWidth < 900 || !window.gsap) return;
+  document.querySelectorAll('.magnetic').forEach(function(btn){
+    btn.addEventListener('mousemove',function(e){
+      var r=btn.getBoundingClientRect();
+      gsap.to(btn,{x:(e.clientX-r.left-r.width/2)*.3,y:(e.clientY-r.top-r.height/2)*.3,duration:.4,ease:'power2.out'});
+    });
+    btn.addEventListener('mouseleave',function(){
+      gsap.to(btn,{x:0,y:0,duration:.6,ease:'elastic.out(1,.5)'});
+    });
+  });
+})();
 
-  function selectTime(t) {
-    document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('picked'));
-    event.target.classList.add('picked');
-    selTime = t;
-    updateStep2Desc();
-    markStep(2);
-    showPanel(3);
-  }
+/* ── PORTFOLIO DRAG-SCROLL ── */
+(function(){
+  if(window.innerWidth < 900) return;
+  var track = document.getElementById('portfolio-track');
+  if(!track) return;
+  var down=false, startX, sl;
+  track.addEventListener('mousedown',function(e){down=true;startX=e.pageX-track.offsetLeft;sl=track.scrollLeft;track.style.cursor='grabbing';});
+  track.addEventListener('mouseleave',function(){down=false;track.style.cursor='';});
+  track.addEventListener('mouseup',function(){down=false;track.style.cursor='';});
+  track.addEventListener('mousemove',function(e){
+    if(!down) return;
+    e.preventDefault();
+    track.scrollLeft=sl-(e.pageX-track.offsetLeft-startX)*1.4;
+  });
+})();
 
-  function updateStep2Desc() {
-    if (selDate !== null && selTime) {
-      document.getElementById('step2-desc').textContent =
-        `${DATES[selDate].name}, ${DATES[selDate].date} · ${selTime}`;
+/* ── THREE.JS LASH SCENE ── */
+(function(){
+  if(!window.THREE) return;
+  try {
+    var section = document.getElementById('lash-scene');
+    var canvas  = document.getElementById('lash-canvas');
+    var mobile  = window.innerWidth < 900;
+    var W = section.offsetWidth, H = section.offsetHeight;
+
+    var renderer = new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:!mobile});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+    renderer.setSize(W,H);
+
+    var scene  = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(50,W/H,0.1,100);
+    camera.position.z = 6;
+
+    scene.add(new THREE.AmbientLight(0xfaf8f5,0.7));
+    var pl1 = new THREE.PointLight(0xc4a26a,4,22);
+    pl1.position.set(3,3,3); scene.add(pl1);
+    var pl2 = new THREE.PointLight(0xd9be93,2,18);
+    pl2.position.set(-4,-2,2); scene.add(pl2);
+
+    var group = new THREE.Group();
+    var lashes=[], cnt=mobile?7:14;
+
+    function makeLash(ox,oy,oz,sc,rz){
+      var pts=[
+        new THREE.Vector3(0,0,0),
+        new THREE.Vector3(.06*sc,.35*sc,.08),
+        new THREE.Vector3(.13*sc,.75*sc,.18),
+        new THREE.Vector3(.16*sc,1.15*sc,.1),
+        new THREE.Vector3(.1*sc,1.55*sc,.02),
+        new THREE.Vector3(.01*sc,1.85*sc,-.04)
+      ];
+      var geo=new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),22,.02*sc,7,false);
+      var mat=new THREE.MeshStandardMaterial({color:0x1c1a17,metalness:.5,roughness:.4});
+      var m=new THREE.Mesh(geo,mat);
+      m.position.set(ox,oy,oz); m.rotation.z=rz;
+      m.userData.spd=.3+Math.random()*.5;
+      m.userData.amp=.04+Math.random()*.08;
+      m.userData.ph=Math.random()*Math.PI*2;
+      return m;
+    }
+
+    for(var i=0;i<cnt;i++){
+      var l=makeLash((Math.random()-.5)*7,(Math.random()-.5)*4,(Math.random()-.5)*2.5,.55+Math.random()*.9,(Math.random()-.5)*.7);
+      lashes.push(l); group.add(l);
+    }
+    scene.add(group);
+
+    /* particles */
+    var pc=mobile?35:85;
+    var pos=new Float32Array(pc*3), col=new Float32Array(pc*3);
+    for(var i=0;i<pc;i++){
+      pos[i*3]=(Math.random()-.5)*9; pos[i*3+1]=(Math.random()-.5)*7; pos[i*3+2]=(Math.random()-.5)*4;
+      col[i*3]=.72+Math.random()*.25; col[i*3+1]=.58+Math.random()*.15; col[i*3+2]=.3+Math.random()*.2;
+    }
+    var pg=new THREE.BufferGeometry();
+    pg.setAttribute('position',new THREE.BufferAttribute(pos,3));
+    pg.setAttribute('color',new THREE.BufferAttribute(col,3));
+    var pm=new THREE.PointsMaterial({size:.045,vertexColors:true,transparent:true,opacity:.8,sizeAttenuation:true});
+    var pts3=new THREE.Points(pg,pm);
+    scene.add(pts3);
+
+    /* entry scale-in when visible */
+    group.scale.set(.3,.3,.3);
+    var entered=false;
+    var obs=new IntersectionObserver(function(en){
+      if(en[0].isIntersecting&&!entered){
+        entered=true;
+        if(window.gsap){
+          gsap.to(group.scale,{x:1,y:1,z:1,duration:1.8,ease:'elastic.out(1,.5)'});
+        } else {
+          group.scale.set(1,1,1);
+        }
+      }
+    },{threshold:.2});
+    obs.observe(section);
+
+    /* mouse */
+    var mx=0,my=0;
+    document.addEventListener('mousemove',function(e){mx=(e.clientX/window.innerWidth)*2-1;my=-(e.clientY/window.innerHeight)*2+1;});
+
+    var clock=new THREE.Clock();
+    var visible=false;
+    var visObs=new IntersectionObserver(function(en){visible=en[0].isIntersecting;},{threshold:.05});
+    visObs.observe(section);
+
+    (function animate(){
+      requestAnimationFrame(animate);
+      var t=clock.getElapsedTime();
+      if(visible){
+        lashes.forEach(function(l){
+          l.position.y+=Math.sin(t*l.userData.spd+l.userData.ph)*.0006;
+          l.rotation.z+=Math.sin(t*.3+l.userData.ph)*.0002;
+        });
+        group.rotation.y=mx*.22+Math.sin(t*.18)*.07;
+        group.rotation.x=my*.1+Math.sin(t*.14)*.04;
+        pl1.position.x=Math.sin(t*.5)*4;
+        pl1.position.y=Math.cos(t*.4)*3;
+        pl1.intensity=3.5+Math.sin(t*1.2)*.6;
+        pts3.rotation.y=t*.04;
+        pm.opacity=.6+Math.sin(t*.9)*.2;
+      }
+      renderer.render(scene,camera);
+    })();
+
+    window.addEventListener('resize',function(){
+      var w=section.offsetWidth, h=section.offsetHeight;
+      renderer.setSize(w,h);
+      camera.aspect=w/h;
+      camera.updateProjectionMatrix();
+    });
+  } catch(e){ console.warn('Three.js lash scene error:',e); }
+})();
+
+/* ── BOOKING FORM ── */
+(function(){
+  var SERVICES=['Wimpern-Extensions','Microblading','Wimpernlifting','Brow Styling','Laser Epilasyon','Brauen Henna'];
+  var DATES=[{n:'Mo',d:'5. Mai'},{n:'Di',d:'6. Mai'},{n:'Mi',d:'7. Mai'},{n:'Do',d:'8. Mai'},{n:'Fr',d:'9. Mai'},{n:'Sa',d:'10. Mai'},{n:'Mo',d:'12. Mai'},{n:'Di',d:'13. Mai'}];
+  var TIMES=['09:00','10:30','12:00','13:30','15:00','16:30'];
+  var selSvc=null, selDate=null, selTime=null;
+
+  /* populate service chips */
+  var picker=document.getElementById('service-picker');
+  SERVICES.forEach(function(s){
+    var b=document.createElement('button');
+    b.className='service-chip'; b.textContent=s;
+    b.onclick=function(){
+      picker.querySelectorAll('.service-chip').forEach(function(c){c.classList.remove('chosen');});
+      b.classList.add('chosen');
+      selSvc=s;
+      document.getElementById('step1-desc').textContent=s;
+      markDone(1); showPanel(2); activateRow(2);
+    };
+    picker.appendChild(b);
+  });
+
+  /* populate dates */
+  var dg=document.getElementById('date-grid');
+  DATES.forEach(function(d,i){
+    var b=document.createElement('button');
+    b.className='date-btn';
+    b.innerHTML='<span class="dname">'+d.n+'</span>'+d.d;
+    b.onclick=function(){
+      dg.querySelectorAll('.date-btn').forEach(function(x){x.classList.remove('picked');});
+      b.classList.add('picked');
+      selDate=i;
+      document.getElementById('time-grid').classList.remove('hidden');
+      updateStep2Desc();
+    };
+    dg.appendChild(b);
+  });
+
+  /* populate times */
+  var tg=document.getElementById('time-grid');
+  TIMES.forEach(function(t){
+    var b=document.createElement('button');
+    b.className='time-btn'; b.textContent=t;
+    b.onclick=function(){
+      tg.querySelectorAll('.time-btn').forEach(function(x){x.classList.remove('picked');});
+      b.classList.add('picked');
+      selTime=t;
+      updateStep2Desc();
+      markDone(2); showPanel(3); activateRow(3);
+    };
+    tg.appendChild(b);
+  });
+
+  function updateStep2Desc(){
+    if(selDate!==null&&selTime){
+      document.getElementById('step2-desc').textContent=DATES[selDate].n+', '+DATES[selDate].d+' · '+selTime;
     }
   }
 
-  /* submit */
-  document.getElementById('btn-submit').addEventListener('click', () => {
-    const name  = document.getElementById('input-name').value.trim();
-    const phone = document.getElementById('input-phone').value.trim();
-    if (!name || !phone) return;
-    document.getElementById('booking-steps').style.display = 'none';
-    document.getElementById('booking-sub').style.display = 'none';
-    [1,2,3].forEach(i => document.getElementById(`panel-${i}`).style.display = 'none');
-    document.getElementById('booking-note').style.display = 'none';
-    const succ = document.getElementById('booking-success');
-    succ.classList.add('visible');
-    document.getElementById('success-desc').innerHTML =
-      `Mir freue uns uf dich, ${name}!<br>Olivera meldet sich bald per WhatsApp.`;
-    document.querySelector('.booking-heading').innerHTML = 'Danke schön!';
-    gsap.from(succ, { opacity: 0, y: 30, duration: 0.8, ease: 'power3.out' });
-  });
-
-  document.getElementById('input-name').addEventListener('input', updateSubmitBtn);
-  document.getElementById('input-phone').addEventListener('input', updateSubmitBtn);
-  function updateSubmitBtn() {
-    const n = document.getElementById('input-name').value.trim();
-    const p = document.getElementById('input-phone').value.trim();
-    document.getElementById('btn-submit').disabled = !n || !p;
+  function showPanel(n){
+    [1,2,3].forEach(function(i){
+      document.getElementById('panel-'+i).classList.toggle('hidden',i!==n);
+    });
   }
-  updateSubmitBtn();
+
+  function activateRow(n){
+    [1,2,3].forEach(function(i){
+      document.getElementById('step-row-'+i).classList.toggle('active',i===n);
+    });
+  }
+
+  function markDone(n){
+    document.getElementById('step-row-'+n).classList.add('done');
+  }
+
+  /* allow going back to previous steps */
+  window.goStep=function(n){
+    if(n===1||(n===2&&selSvc)||(n===3&&selSvc&&selDate!==null&&selTime)){
+      showPanel(n); activateRow(n);
+    }
+  };
+
+  /* inputs → enable submit */
+  var inpName=document.getElementById('inp-name');
+  var inpPhone=document.getElementById('inp-phone');
+  var btnSub=document.getElementById('btn-submit');
+  function checkInputs(){
+    btnSub.disabled=!(inpName.value.trim()&&inpPhone.value.trim());
+  }
+  inpName.addEventListener('input',checkInputs);
+  inpPhone.addEventListener('input',checkInputs);
+
+  /* submit */
+  window.submitBooking=function(){
+    var name=inpName.value.trim(), phone=inpPhone.value.trim();
+    if(!name||!phone) return;
+    document.getElementById('booking-form-wrap').style.display='none';
+    document.getElementById('booking-heading').textContent='Danke schön!';
+    document.getElementById('booking-sub').style.display='none';
+    var succ=document.getElementById('booking-success');
+    document.getElementById('success-desc').innerHTML='Mir freue uns uf dich, '+name+'!<br>Olivera meldet sich bald per WhatsApp.';
+    succ.classList.add('visible');
+  };
 })();
 </script>
 </body></html>
